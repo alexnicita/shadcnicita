@@ -179,7 +179,15 @@ function App() {
             <p className="text-muted-foreground mb-8 mt-16">
               currently: <br />
               <span className="text-foreground">
-                special sits. strategy consultant
+                <a
+                  href="https://en.wikipedia.org/wiki/Special_situation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-muted-foreground transition-colors"
+                >
+                  special situations
+                </a>{" "}
+                strategy consultant
               </span>
             </p>
             <p className="text-muted-foreground mb-8">
@@ -230,9 +238,9 @@ function App() {
               raising $?{" "}
               <a
                 href="mailto:alex@nicita.cc"
-                className="underline hover:text-muted-foreground transition-colors"
+                className="hover:text-muted-foreground transition-colors"
               >
-                email alex@nicita.cc
+                email <span className="underline">alex@nicita.cc</span>
               </a>
             </p>
             <div className="mt-4">
