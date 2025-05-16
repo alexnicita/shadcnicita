@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import SunCalc from "suncalc";
 import "./App.css";
 
+const NYC_LOCATION = { lat: 40.7128, lng: -74.006 };
+
 function LoadingAnimation() {
   return (
     <div className="fixed inset-0 bg-background flex items-center justify-center z-50">
@@ -53,95 +55,64 @@ function LoadingAnimation() {
   );
 }
 
+function getThemeMessage(now: Date, isDark: boolean) {
+  const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+  let nextChange;
+  if (isDark) {
+    // Night: time until sunrise
+    nextChange = times.sunrise;
+  } else {
+    // Day: time until sunset
+    nextChange = times.sunset;
+  }
+  if (nextChange.getTime() - now.getTime() < 0) {
+    nextChange = new Date(nextChange.getTime() + 24 * 60 * 60 * 1000);
+  }
+  const timeUntilChange = new Date(nextChange.getTime() - now.getTime());
+  const hours = Math.floor(timeUntilChange.getTime() / (1000 * 60 * 60));
+  const minutes = Math.floor(
+    (timeUntilChange.getTime() % (1000 * 60 * 60)) / (1000 * 60)
+  );
+  return `${hours}h ${minutes}m`;
+}
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
-    null
-  );
-  const [themeMessage, setThemeMessage] = useState("");
   const [isAutoTheme, setIsAutoTheme] = useState(true);
+  const [themeMessage, setThemeMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    // Get user's location
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          // Default to New York City if location access is denied
-          setLocation({ lat: 40.7128, lng: -74.006 });
-        }
-      );
-    }
-  }, []);
-
-  // Add a function to recalculate the theme message for the current mode
-  function getThemeMessage(
-    now: Date,
-    location: { lat: number; lng: number },
-    isDark: boolean
-  ) {
-    const times = SunCalc.getTimes(now, location.lat, location.lng);
-    let nextChange = isDark ? times.sunrise : times.sunset;
-    if (nextChange.getTime() - now.getTime() < 0) {
-      // If the next event is in the past, add 1 day
-      nextChange = new Date(nextChange.getTime() + 24 * 60 * 60 * 1000);
-    }
-    const timeUntilChange = new Date(nextChange.getTime() - now.getTime());
-    const hours = Math.floor(timeUntilChange.getTime() / (1000 * 60 * 60));
-    const minutes = Math.floor(
-      (timeUntilChange.getTime() % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    return isDark
-      ? `rise in ${hours}h ${minutes}m`
-      : `set in ${hours}h ${minutes}m`;
-  }
-
-  useEffect(() => {
-    if (location) {
-      const updateTheme = () => {
-        const now = new Date();
-        const times = SunCalc.getTimes(now, location.lat, location.lng);
-        const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
-        const sunset = new Date(times.sunset.getTime() - 30 * 60000);
-        const isDay = now > sunrise && now < sunset;
-        if (isAutoTheme) {
-          setIsDarkMode(!isDay);
-        }
-        // Always update theme message for the current mode
-        setThemeMessage(
-          getThemeMessage(now, location, isAutoTheme ? !isDay : isDarkMode)
-        );
-      };
-      updateTheme();
-      const interval = setInterval(updateTheme, 60000);
-      return () => clearInterval(interval);
-    }
-  }, [location, isAutoTheme, isDarkMode]);
-
-  // Update theme message immediately when toggling theme manually
-  useEffect(() => {
-    if (location && !isAutoTheme) {
+    const updateTheme = () => {
       const now = new Date();
-      setThemeMessage(getThemeMessage(now, location, isDarkMode));
+      const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+      const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
+      const sunset = new Date(times.sunset.getTime() - 30 * 60000);
+      const isDay = now > sunrise && now < sunset;
+      if (isAutoTheme) {
+        setIsDarkMode(!isDay);
+      }
+      setThemeMessage(getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode));
+    };
+    updateTheme();
+    const interval = setInterval(updateTheme, 60000);
+    return () => clearInterval(interval);
+  }, [isAutoTheme, isDarkMode]);
+
+  useEffect(() => {
+    if (!isAutoTheme) {
+      const now = new Date();
+      setThemeMessage(getThemeMessage(now, isDarkMode));
     }
-  }, [isDarkMode, isAutoTheme, location]);
+  }, [isDarkMode, isAutoTheme]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -291,6 +262,9 @@ function App() {
           {/* Mobile: show inside main content, centered, only on small screens */}
           <div className="block md:hidden w-full flex justify-center mt-8">
             <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground lowercase">
+                nyc
+              </span>
               <button
                 onClick={handleThemeClick}
                 className="p-1 rounded-full border border-border hover:border-foreground transition-colors flex items-center justify-center"
@@ -298,20 +272,7 @@ function App() {
                 title="Click to toggle theme (Alt + click to toggle auto mode)"
               >
                 {isDarkMode ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-                  </svg>
-                ) : (
+                  // Show sun icon at night
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -333,6 +294,21 @@ function App() {
                     <path d="m6.34 17.66-1.41 1.41" />
                     <path d="m19.07 4.93-1.41 1.41" />
                   </svg>
+                ) : (
+                  // Show moon icon during the day
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                  </svg>
                 )}
               </button>
               <span className="text-xs text-muted-foreground whitespace-nowrap">
@@ -342,6 +318,7 @@ function App() {
           </div>
           {/* Desktop: fixed bottom right, hidden on mobile */}
           <div className="hidden md:flex fixed z-40 bottom-8 right-8 items-center gap-2">
+            <span className="text-sm text-muted-foreground lowercase">nyc</span>
             <button
               onClick={handleThemeClick}
               className="p-1 rounded-full border border-border hover:border-foreground transition-colors flex items-center justify-center"
@@ -349,20 +326,7 @@ function App() {
               title="Click to toggle theme (Alt + click to toggle auto mode)"
             >
               {isDarkMode ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-                </svg>
-              ) : (
+                // Show sun icon at night
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -383,6 +347,21 @@ function App() {
                   <path d="M20 12h2" />
                   <path d="m6.34 17.66-1.41 1.41" />
                   <path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+              ) : (
+                // Show moon icon during the day
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
                 </svg>
               )}
             </button>
