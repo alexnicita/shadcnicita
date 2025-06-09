@@ -255,7 +255,7 @@ function App() {
           <div className="block md:hidden w-full flex justify-center mt-8">
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground lowercase">
-                bos
+                sf
               </span>
               <button
                 onClick={handleThemeClick}
