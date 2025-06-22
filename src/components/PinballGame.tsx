@@ -67,7 +67,7 @@ const PinballGame = () => {
 
   const launcherCurve = useRef(
     Array.from({ length: 20 }, (_, i) => ({
-      x: 700 - i * 20,
+      x: 760 - i * 20,
       y: 150 - Math.sin(((i / 19) * Math.PI) / 2) * 100,
       radius: 10,
     }))
