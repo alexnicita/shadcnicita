@@ -33,6 +33,7 @@ const PinballGame = () => {
   const [time, setTime] = useState(0);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [feedbackText, setFeedbackText] = useState("");
+  const [trail, setTrail] = useState<{ x: number; y: number }[]>([]);
 
   const ball = useRef<Ball>({
     x: 770,
@@ -66,9 +67,9 @@ const PinballGame = () => {
   ]);
 
   const launcherCurve = useRef(
-    Array.from({ length: 20 }, (_, i) => ({
-      x: 760 - i * 20,
-      y: 150 - Math.sin(((i / 19) * Math.PI) / 2) * 100,
+    Array.from({ length: 25 }, (_, i) => ({
+      x: 720 - i * 18,
+      y: 120 - Math.sin(((i / 24) * Math.PI) / 2) * 100,
       radius: 10,
     }))
   );
@@ -89,6 +90,7 @@ const PinballGame = () => {
   const animationRef = useRef<number>();
 
   const resetBall = () => {
+    setTrail([]);
     ball.current.x = 770;
     ball.current.y = 600;
     ball.current.vx = 0;
@@ -105,7 +107,12 @@ const PinballGame = () => {
     ball.current.x += ball.current.vx;
     ball.current.y += ball.current.vy;
 
-    // Elegant friction
+    if (time < 300) {
+      // Keep trail for 5 seconds
+      setTrail((prev) => [...prev, { x: ball.current.x, y: ball.current.y }]);
+    }
+
+    // Ball friction
     ball.current.vx *= 0.998;
 
     // Update flippers with smooth animation
@@ -283,6 +290,16 @@ const PinballGame = () => {
     );
     ctx.fillStyle = "#4ecdc4";
     ctx.fill();
+
+    // Draw debug trail
+    ctx.beginPath();
+    ctx.moveTo(trail[0]?.x, trail[0]?.y);
+    trail.forEach((p) => {
+      ctx.lineTo(p.x, p.y);
+    });
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
 
     // Draw launcher curve
     launcherCurve.current.forEach((wallPart) => {
