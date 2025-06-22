@@ -37,13 +37,13 @@ const PinballGame = () => {
   const ball = useRef<Ball>({
     x: 770,
     y: 600,
-    vx: 0,
-    vy: -15,
+    vx: -4,
+    vy: -14,
     radius: 7,
   });
 
   const leftFlipper = useRef<Flipper>({
-    x: 340,
+    x: 290,
     y: 650,
     angle: -0.5,
     targetAngle: -0.5,
@@ -51,7 +51,7 @@ const PinballGame = () => {
   });
 
   const rightFlipper = useRef<Flipper>({
-    x: 460,
+    x: 510,
     y: 650,
     angle: Math.PI - 0.5,
     targetAngle: Math.PI - 0.5,
@@ -65,19 +65,42 @@ const PinballGame = () => {
     { x: 400, y: 350, radius: 20, hit: false, pulse: 0 },
   ]);
 
+  const guideWalls = useRef(
+    [
+      // Left guide wall
+      { x: 200, y: 400 },
+      { x: 210, y: 415 },
+      { x: 220, y: 430 },
+      { x: 230, y: 445 },
+      { x: 240, y: 460 },
+      { x: 250, y: 475 },
+      { x: 260, y: 490 },
+      { x: 270, y: 505 },
+      // Right guide wall
+      { x: 600, y: 400 },
+      { x: 590, y: 415 },
+      { x: 580, y: 430 },
+      { x: 570, y: 445 },
+      { x: 560, y: 460 },
+      { x: 550, y: 475 },
+      { x: 540, y: 490 },
+      { x: 530, y: 505 },
+    ].map((p) => ({ ...p, radius: 10 }))
+  );
+
   const walls = useRef([
     // Launch lane wall
     { x: 720, y: 200, width: 10, height: 500 },
   ]);
-  const centerPost = useRef({ x: 400, y: 680, radius: 5 });
+  const centerPost = useRef({ x: 400, y: 675, radius: 8 });
 
   const animationRef = useRef<number>();
 
   const resetBall = () => {
     ball.current.x = 770;
     ball.current.y = 600;
-    ball.current.vx = 0;
-    ball.current.vy = -15; // Launch speed
+    ball.current.vx = -4;
+    ball.current.vy = -14; // Launch speed
   };
 
   const updateGame = () => {
@@ -156,6 +179,21 @@ const PinballGame = () => {
     ) {
       ball.current.vy *= -0.8;
     }
+
+    // Guide walls collision
+    guideWalls.current.forEach((wallPart) => {
+      const dx = ball.current.x - wallPart.x;
+      const dy = ball.current.y - wallPart.y;
+      if (
+        Math.sqrt(dx * dx + dy * dy) <
+        ball.current.radius + wallPart.radius
+      ) {
+        const angle = Math.atan2(dy, dx);
+        const force = 6;
+        ball.current.vx = Math.cos(angle) * force;
+        ball.current.vy = Math.sin(angle) * force;
+      }
+    });
 
     // Bumper collisions with artistic feedback
     bumpers.current.forEach((bumper) => {
@@ -245,6 +283,14 @@ const PinballGame = () => {
     );
     ctx.fillStyle = "#4ecdc4";
     ctx.fill();
+
+    // Draw guide walls
+    guideWalls.current.forEach((wallPart) => {
+      ctx.beginPath();
+      ctx.arc(wallPart.x, wallPart.y, wallPart.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#333";
+      ctx.fill();
+    });
 
     // Draw bumpers with artistic styling
     bumpers.current.forEach((bumper) => {
