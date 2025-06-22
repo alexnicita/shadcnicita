@@ -51,8 +51,8 @@ const PinballGame = () => {
   const rightFlipper = useRef<Flipper>({
     x: 500,
     y: 650,
-    angle: 0.4,
-    targetAngle: 0.4,
+    angle: Math.PI - 0.4,
+    targetAngle: Math.PI - 0.4,
     isPressed: false,
   });
 
@@ -79,7 +79,7 @@ const PinballGame = () => {
     setTime((prev) => prev + 1);
 
     // Update ball physics with elegant gravity
-    ball.current.vy += 0.15;
+    ball.current.vy += 0.1;
     ball.current.x += ball.current.vx;
     ball.current.y += ball.current.vy;
 
@@ -88,15 +88,15 @@ const PinballGame = () => {
 
     // Update flippers with smooth animation
     if (leftFlipper.current.isPressed) {
-      leftFlipper.current.targetAngle = 0.3;
+      leftFlipper.current.targetAngle = -1.2;
     } else {
       leftFlipper.current.targetAngle = -0.4;
     }
 
     if (rightFlipper.current.isPressed) {
-      rightFlipper.current.targetAngle = -0.3;
+      rightFlipper.current.targetAngle = Math.PI - 1.2;
     } else {
-      rightFlipper.current.targetAngle = 0.4;
+      rightFlipper.current.targetAngle = Math.PI - 0.4;
     }
 
     leftFlipper.current.angle +=
@@ -268,11 +268,11 @@ const PinballGame = () => {
     // Elegant UI
     ctx.fillStyle = "#fff";
     ctx.font = '16px "Courier New", monospace';
-    ctx.fillText(`SCORE: ${score.toString().padStart(6, "0")}`, 20, 30);
-    ctx.fillText(`LIVES: ${lives}`, 20, 50);
+    ctx.fillText(`SCORE: ${score.toString().padStart(6, "0")}`, 30, 30);
+    ctx.fillText(`LIVES: ${lives}`, 30, 50);
     ctx.fillText(
       `TIME: ${Math.floor(time / 60)}:${(time % 60).toString().padStart(2, "0")}`,
-      20,
+      30,
       70
     );
 
