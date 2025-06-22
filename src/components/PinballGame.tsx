@@ -43,7 +43,7 @@ const PinballGame = () => {
   });
 
   const leftFlipper = useRef<Flipper>({
-    x: 300,
+    x: 320,
     y: 650,
     angle: -0.4,
     targetAngle: -0.4,
@@ -51,7 +51,7 @@ const PinballGame = () => {
   });
 
   const rightFlipper = useRef<Flipper>({
-    x: 500,
+    x: 480,
     y: 650,
     angle: Math.PI - 0.4,
     targetAngle: Math.PI - 0.4,
@@ -69,10 +69,10 @@ const PinballGame = () => {
   const animationRef = useRef<number>();
 
   const resetBall = () => {
-    ball.current.x = 400;
+    ball.current.x = 750;
     ball.current.y = 600;
-    ball.current.vx = (Math.random() - 0.5) * 3;
-    ball.current.vy = -4;
+    ball.current.vx = -2;
+    ball.current.vy = -12;
   };
 
   const updateGame = () => {
@@ -81,7 +81,7 @@ const PinballGame = () => {
     setTime((prev) => prev + 1);
 
     // Update ball physics with elegant gravity
-    ball.current.vy += 0.1;
+    ball.current.vy += 0.08;
     ball.current.x += ball.current.vx;
     ball.current.y += ball.current.vy;
 
@@ -148,7 +148,7 @@ const PinballGame = () => {
 
         // Artistic bounce
         const angle = Math.atan2(dy, dx);
-        const force = 6 + Math.random() * 2;
+        const force = 6;
         ball.current.vx = Math.cos(angle) * force;
         ball.current.vy = Math.sin(angle) * force;
       }
@@ -165,10 +165,10 @@ const PinballGame = () => {
       const dy = ball.current.y - flipper.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance < ball.current.radius + 30) {
+      if (distance < ball.current.radius + 40) {
         if (flipper.isPressed) {
-          ball.current.vy = -8 - Math.random() * 2;
-          ball.current.vx += (Math.random() - 0.5) * 3;
+          ball.current.vy = -10;
+          ball.current.vx += (flipper === leftFlipper.current ? 1 : -1) * 2;
           setScore((prev) => prev + 10);
         }
       }
@@ -233,11 +233,11 @@ const PinballGame = () => {
 
       // Flipper body
       ctx.fillStyle = flipper.isPressed ? "#ff6b6b" : "#4ecdc4";
-      ctx.fillRect(0, -8, 60, 16);
+      ctx.fillRect(0, -8, 80, 16);
 
       // Flipper tip
       ctx.beginPath();
-      ctx.arc(60, 0, 8, 0, Math.PI * 2);
+      ctx.arc(80, 0, 8, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.restore();
