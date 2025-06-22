@@ -31,6 +31,8 @@ const PinballGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [time, setTime] = useState(0);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [feedbackText, setFeedbackText] = useState("");
 
   const ball = useRef<Ball>({
     x: 400,
@@ -387,6 +389,15 @@ const PinballGame = () => {
         className="border border-gray-800 rounded-lg shadow-2xl"
         style={{ maxWidth: "100%", height: "auto" }}
       />
+      <div className="absolute bottom-4 right-4">
+        <button
+          onClick={() => setIsFeedbackModalOpen(true)}
+          className="w-12 h-12 bg-gray-700 text-white rounded-full flex items-center justify-center text-2xl font-bold hover:bg-gray-600 transition-colors"
+          title="Send Feedback"
+        >
+          ?
+        </button>
+      </div>
       <div className="mt-8">
         <a
           href="/"
@@ -395,6 +406,36 @@ const PinballGame = () => {
           ← Back to home
         </a>
       </div>
+      {isFeedbackModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md">
+            <h2 className="text-2xl font-bold text-white mb-4 font-mono">
+              Feedback
+            </h2>
+            <textarea
+              value={feedbackText}
+              onChange={(e) => setFeedbackText(e.target.value)}
+              className="w-full h-40 bg-gray-900 text-white p-4 rounded-md font-mono focus:outline-none focus:ring-2 focus:ring-gray-600"
+              placeholder="Tell us what you think..."
+            />
+            <div className="mt-6 flex justify-end gap-4">
+              <button
+                onClick={() => setIsFeedbackModalOpen(false)}
+                className="px-4 py-2 text-gray-400 hover:text-white transition-colors font-mono"
+              >
+                Cancel
+              </button>
+              <a
+                href={`mailto:alex@nicita.cc?subject=Pinball Feedback&body=${encodeURIComponent(feedbackText)}`}
+                onClick={() => setIsFeedbackModalOpen(false)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition-colors font-mono"
+              >
+                Send
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
