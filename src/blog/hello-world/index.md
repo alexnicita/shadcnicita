@@ -6,7 +6,7 @@ description: "Description"
 
 Welcome to my first blog post! This is where I'll be sharing thoughts on technology, capital, and the intersection of both.
 
-![The World](./world.svg)
+![The World](/world.svg)
 
 ## Why Start a Blog?
 
