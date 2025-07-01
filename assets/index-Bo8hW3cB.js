@@ -6,7 +6,7 @@ description: "Description"
 
 Welcome to my first blog post! This is where I'll be sharing thoughts on technology, capital, and the intersection of both.
 
-![The World](./world.svg)
+![The World](/world.svg)
 
 ## Why Start a Blog?
 
@@ -27,4 +27,4 @@ This is just the beginning. Every expert was once a beginner, and every master w
 
 Thanks for reading! More posts coming soon.
 `;export{e as default};
-//# sourceMappingURL=index-DB6p9q-h.js.map
+//# sourceMappingURL=index-Bo8hW3cB.js.map
