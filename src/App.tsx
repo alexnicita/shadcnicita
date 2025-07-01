@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import SunCalc from "suncalc";
 import "./App.css";
 
-const SF_LOCATION = { lat: 37.7749, lng: -122.4194 };
+const NYC_LOCATION = { lat: 40.7128, lng: -74.006 };
 
 function LoadingAnimation() {
   return (
@@ -56,7 +56,7 @@ function LoadingAnimation() {
 }
 
 function getThemeMessage(now: Date, isDark: boolean) {
-  const times = SunCalc.getTimes(now, SF_LOCATION.lat, SF_LOCATION.lng);
+  const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
   let nextChange;
   if (isDark) {
     // Night: time until sunrise
@@ -93,7 +93,7 @@ function App() {
   useEffect(() => {
     const updateTheme = () => {
       const now = new Date();
-      const times = SunCalc.getTimes(now, SF_LOCATION.lat, SF_LOCATION.lng);
+      const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
       const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
       const sunset = new Date(times.sunset.getTime() - 30 * 60000);
       const isDay = now > sunrise && now < sunset;
@@ -255,7 +255,7 @@ function App() {
           <div className="block md:hidden w-full flex justify-center mt-8">
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground lowercase">
-                sf
+                nyc
               </span>
               <button
                 onClick={handleThemeClick}
@@ -310,7 +310,7 @@ function App() {
           </div>
           {/* Desktop: fixed bottom right, hidden on mobile */}
           <div className="hidden md:flex fixed z-40 bottom-8 right-8 items-center gap-2">
-            <span className="text-sm text-muted-foreground lowercase">sf</span>
+            <span className="text-sm text-muted-foreground lowercase">nyc</span>
             <button
               onClick={handleThemeClick}
               className="p-1 rounded-full border border-border hover:border-foreground transition-colors flex items-center justify-center"
