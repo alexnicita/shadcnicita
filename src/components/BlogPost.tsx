@@ -185,10 +185,12 @@ export default function BlogPost() {
             <ReactMarkdown
               components={{
                 img: ({ src, alt }) => {
-                  // Handle relative image paths
-                  const imageSrc = src?.startsWith("./")
-                    ? `/src/blog/${slug}/${src.slice(2)}`
-                    : src;
+                  // Handle relative image paths - convert to public folder paths
+                  let imageSrc = src;
+                  if (src?.startsWith("./")) {
+                    const filename = src.slice(2); // Remove "./"
+                    imageSrc = `/${filename}`; // Serve from public folder
+                  }
 
                   return (
                     <img
