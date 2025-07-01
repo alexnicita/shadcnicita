@@ -1,0 +1,30 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Earth circle -->
+  <circle cx="100" cy="100" r="90" fill="#4A90E2" stroke="#2C5F8A" stroke-width="2"/>
+  
+  <!-- Continents -->
+  <!-- North America -->
+  <path d="M50 70 Q55 60 70 65 Q80 70 85 80 Q80 90 75 95 Q60 100 50 95 Q45 85 50 70" fill="#228B22"/>
+  
+  <!-- South America -->
+  <path d="M70 100 Q75 105 80 120 Q78 135 75 145 Q70 150 65 145 Q60 140 62 125 Q65 110 70 100" fill="#228B22"/>
+  
+  <!-- Europe -->
+  <path d="M90 60 Q95 55 105 60 Q110 65 108 70 Q100 75 95 70 Q90 65 90 60" fill="#228B22"/>
+  
+  <!-- Africa -->
+  <path d="M95 75 Q100 80 102 95 Q105 110 100 125 Q95 135 90 130 Q85 115 87 100 Q90 85 95 75" fill="#228B22"/>
+  
+  <!-- Asia -->
+  <path d="M110 50 Q125 45 140 55 Q150 65 145 80 Q140 90 130 85 Q120 80 115 70 Q110 60 110 50" fill="#228B22"/>
+  
+  <!-- Australia -->
+  <path d="M130 130 Q140 125 150 130 Q155 135 150 140 Q140 145 135 140 Q130 135 130 130" fill="#228B22"/>
+  
+  <!-- White clouds/atmosphere -->
+  <circle cx="70" cy="50" r="8" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="120" cy="40" r="6" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="140" cy="80" r="7" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="60" cy="120" r="5" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="110" cy="140" r="6" fill="#FFFFFF" opacity="0.6"/>
+</svg> 

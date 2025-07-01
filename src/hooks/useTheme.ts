@@ -1,0 +1,84 @@
+import { useState, useEffect } from 'react';
+import SunCalc from 'suncalc';
+
+const NYC_LOCATION = { lat: 40.7128, lng: -74.0060 };
+
+function getThemeMessage(now: Date, isDark: boolean) {
+  const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+  let nextChange;
+  if (isDark) {
+    // Night: time until sunrise
+    nextChange = times.sunrise;
+  } else {
+    // Day: time until sunset
+    nextChange = times.sunset;
+  }
+  if (nextChange.getTime() - now.getTime() < 0) {
+    nextChange = new Date(nextChange.getTime() + 24 * 60 * 60 * 1000);
+  }
+  const timeUntilChange = new Date(nextChange.getTime() - now.getTime());
+  const hours = Math.floor(timeUntilChange.getTime() / (1000 * 60 * 60));
+  const minutes = Math.floor(
+    (timeUntilChange.getTime() % (1000 * 60 * 60)) / (1000 * 60)
+  );
+  return `${hours}h ${minutes}m`;
+}
+
+export function useTheme() {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isAutoTheme, setIsAutoTheme] = useState(true);
+  const [themeMessage, setThemeMessage] = useState("");
+
+  useEffect(() => {
+    const updateTheme = () => {
+      const now = new Date();
+      const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+      const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
+      const sunset = new Date(times.sunset.getTime() - 30 * 60000);
+      const isDay = now > sunrise && now < sunset;
+      if (isAutoTheme) {
+        setIsDarkMode(!isDay);
+      }
+      setThemeMessage(getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode));
+    };
+    updateTheme();
+    const interval = setInterval(updateTheme, 60000);
+    return () => clearInterval(interval);
+  }, [isAutoTheme, isDarkMode]);
+
+  useEffect(() => {
+    if (!isAutoTheme) {
+      const now = new Date();
+      setThemeMessage(getThemeMessage(now, isDarkMode));
+    }
+  }, [isDarkMode, isAutoTheme]);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
+  const handleThemeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (e.altKey) {
+      setIsAutoTheme(!isAutoTheme);
+    } else {
+      setIsDarkMode(!isDarkMode);
+      if (isAutoTheme) {
+        setIsAutoTheme(false);
+      }
+    }
+  };
+
+  return {
+    isDarkMode,
+    isAutoTheme,
+    themeMessage,
+    handleThemeClick,
+    setIsDarkMode,
+    setIsAutoTheme
+  };
+} 

@@ -14,4 +14,5 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: true,
   },
+  assetsInclude: ["**/*.md"],
 });
