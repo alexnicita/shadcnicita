@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import App from "./App";
+import LoadingAnimation from "./components/shared/LoadingAnimation";
 
 // Lazy load blog components - only load when needed!
 const BlogIndex = lazy(() => import("./components/BlogIndex"));
@@ -14,7 +15,7 @@ export default function Router() {
         <Route
           path="/blog"
           element={
-            <Suspense fallback={<div className="min-h-screen bg-background" />}>
+            <Suspense fallback={null}>
               <BlogIndex />
             </Suspense>
           }
@@ -22,7 +23,7 @@ export default function Router() {
         <Route
           path="/blog/:slug"
           element={
-            <Suspense fallback={<div className="min-h-screen bg-background" />}>
+            <Suspense fallback={null}>
               <BlogPost />
             </Suspense>
           }
