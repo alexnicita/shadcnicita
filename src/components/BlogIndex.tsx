@@ -1,30 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import BaseLayout from "./shared/BaseLayout";
-
-interface BlogPost {
-  slug: string;
-  title: string;
-  date: string;
-  description: string;
-}
-
-// For now, we'll manually maintain this list
-// In a real implementation, this could be auto-generated during build
-const blogPosts: BlogPost[] = [
-  {
-    slug: "hello-world",
-    title: "Hello World",
-    date: new Date().toISOString().split("T")[0],
-    description: "Description",
-  },
-  {
-    slug: "sample-post",
-    title: "Sample Post",
-    date: new Date().toISOString().split("T")[0],
-    description: "Another test post for the blog",
-  },
-];
+import { blogPosts } from "../data/blogPosts";
 
 export default function BlogIndex() {
   const [isLoading, setIsLoading] = useState(true);

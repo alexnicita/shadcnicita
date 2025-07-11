@@ -1,30 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
 import BaseLayout from "./shared/BaseLayout";
-
-interface BlogPost {
-  slug: string;
-  title: string;
-  date: string;
-  description: string;
-}
-
-// Import the same blog posts data from BlogIndex
-const blogPosts: BlogPost[] = [
-  {
-    slug: "hello-world",
-    title: "Hello World",
-    date: new Date().toISOString().split("T")[0],
-    description: "Description",
-  },
-  {
-    slug: "sample-post",
-    title: "Sample Post",
-    date: new Date().toISOString().split("T")[0],
-    description: "Another test post for the blog",
-  },
-];
+import MarkdownRenderer from "./shared/MarkdownRenderer";
+import { blogPosts } from "../data/blogPosts";
 
 interface PostData {
   title: string;
@@ -181,35 +159,7 @@ export default function BlogPost() {
             )}
           </header>
 
-          <div className="prose prose-lg max-w-none dark:prose-invert">
-            <ReactMarkdown
-              components={{
-                img: ({ src, alt }) => {
-                  // Handle relative image paths - convert to public folder paths
-                  let imageSrc = src;
-                  if (src?.startsWith("./")) {
-                    const filename = src.slice(2); // Remove "./"
-                    imageSrc = `/${filename}`; // Serve from public folder
-                  }
-
-                  return (
-                    <img
-                      src={imageSrc}
-                      alt={alt}
-                      className="max-w-full h-auto rounded-lg"
-                      style={{
-                        maxWidth: "400px",
-                        margin: "2rem auto",
-                        display: "block",
-                      }}
-                    />
-                  );
-                },
-              }}
-            >
-              {post.content}
-            </ReactMarkdown>
-          </div>
+          <MarkdownRenderer content={post.content} slug={slug} />
         </article>
       </div>
     </BaseLayout>
