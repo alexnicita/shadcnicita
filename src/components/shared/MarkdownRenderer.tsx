@@ -2,13 +2,9 @@ import { useMemo } from "react";
 
 interface MarkdownRendererProps {
   content: string;
-  slug?: string;
 }
 
-export default function MarkdownRenderer({
-  content,
-  slug,
-}: MarkdownRendererProps) {
+export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const processedContent = useMemo(() => {
     // Lightweight markdown parsing optimized for your specific content
     let processed = content
@@ -26,7 +22,7 @@ export default function MarkdownRenderer({
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
 
       // Images with optimized handling
-      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
         let imageSrc = src;
         if (src.startsWith("./")) {
           imageSrc = `/${src.slice(2)}`;

@@ -159,7 +159,7 @@ export default function BlogPost() {
             )}
           </header>
 
-          <MarkdownRenderer content={post.content} slug={slug} />
+          <MarkdownRenderer content={post.content} />
         </article>
       </div>
     </BaseLayout>
