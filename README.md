@@ -16,12 +16,11 @@ shadcnicita/
 │   │   └── shared/         # Shared components
 │   ├── hooks/              # Custom React hooks
 │   ├── utils/              # Utility functions
-│   ├── api/                # Serverless API functions
-│   │   └── log.ts          # Request logging endpoint
 │   ├── data/               # Static data
 │   ├── blog/               # Blog content
 │   └── lib/                # Library utilities
-├── api/                    # Legacy (moved to src/api/)
+├── api/                    # Serverless API functions (Vercel standard)
+│   └── log.ts              # Request logging endpoint
 ├── public/                 # Static assets
 ├── vercel.json            # Vercel configuration
 └── package.json
@@ -156,16 +155,17 @@ No environment variables required for basic functionality.
 ### Code Organization
 
 - All source code lives in `src/` directory
+- API functions are in `/api/` directory (Vercel standard)
 - API functions are TypeScript with proper Vercel types
 - Components are organized by feature and reusability
 - Utilities and hooks are centralized for reuse
 
 ### Adding New API Endpoints
 
-1. Create new `.ts` file in `src/api/`
-2. Import Vercel types: `import type { VercelRequest, VercelResponse } from '@vercel/node'`
+1. Create new `.ts` file in `/api/` directory
+2. Import Vercel types: `import type { VercelRequest, VercelResponse } from "@vercel/node"`
 3. Export default handler function
-4. Deploy to Vercel
+4. Deploy to Vercel (automatically detected)
 
 Example:
 
