@@ -68,7 +68,7 @@ shadcnicita/
 
 ### `/api/log` (POST)
 
-**File Location**: `src/api/log.ts`
+**File Location**: `api/log.ts`
 
 Logs page visits and user interactions for analytics.
 
