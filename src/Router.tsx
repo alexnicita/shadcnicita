@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import App from "./App";
+import BlogIndex from "./components/BlogIndex";
+import BlogPost from "./components/BlogPost";
+import Privacy from "./components/Privacy";
 import { initializeLogging } from "./utils/logger";
-
-// Lazy load blog components - only load when needed!
-const BlogIndex = lazy(() => import("./components/BlogIndex"));
-const BlogPost = lazy(() => import("./components/BlogPost"));
 
 export default function Router() {
   // Initialize logging when router mounts
@@ -17,22 +16,9 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route
-          path="/blog"
-          element={
-            <Suspense fallback={<div>Loading blog...</div>}>
-              <BlogIndex />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/blog/:slug"
-          element={
-            <Suspense fallback={<div>Loading post...</div>}>
-              <BlogPost />
-            </Suspense>
-          }
-        />
+        <Route path="/blog" element={<BlogIndex />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </BrowserRouter>
   );
