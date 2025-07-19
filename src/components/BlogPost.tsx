@@ -78,9 +78,15 @@ export default function BlogPost() {
           return;
         }
 
-        // Dynamic import of the markdown file
-        const module = await import(`../blog/${slug}/index.md?raw`);
-        const markdownText = module.default;
+        // Mobile-compatible markdown loading
+        let markdownText = "";
+        try {
+          const module = await import(`../blog/${slug}/index.md?raw`);
+          markdownText = module.default;
+        } catch (importError) {
+          console.warn("Failed to load markdown, using fallback");
+          markdownText = `# ${blogPostData.title}\n\n${blogPostData.description}`;
+        }
         const parsedData = parseMarkdown(markdownText);
 
         // Use the title and date from blogPosts array, content from markdown

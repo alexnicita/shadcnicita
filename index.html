@@ -40,64 +40,68 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- MOBILE DEBUG MODE - RB2B TEMPORARILY DISABLED -->
+    <!-- Mobile-Optimized RB2B Tracking -->
     <script>
-      // Comprehensive mobile debugging
+      // Ultra-simple RB2B implementation for maximum mobile compatibility
       (function () {
-        console.log("🔍 MOBILE DEBUG MODE ACTIVE");
-        console.log("📱 User Agent:", navigator.userAgent);
-        console.log(
-          "📐 Viewport:",
-          window.innerWidth + "x" + window.innerHeight
-        );
-        console.log("🌐 Location:", window.location.href);
+        "use strict";
 
-        // Error tracking
-        window.addEventListener("error", function (e) {
-          console.error("❌ JS Error:", e.message);
-          console.error(
-            "📍 Location:",
-            e.filename + ":" + e.lineno + ":" + e.colno
-          );
-          console.error("🔧 Stack:", e.error?.stack);
-        });
+        function loadRB2B() {
+          try {
+            if (window.reb2b && window.reb2b.invoked) return;
 
-        window.addEventListener("unhandledrejection", function (e) {
-          console.error("❌ Promise Rejection:", e.reason);
-        });
+            var reb2b = (window.reb2b = window.reb2b || []);
+            reb2b.invoked = true;
+            reb2b.methods = ["identify", "collect"];
 
-        // DOM loading tracking
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", function () {
-            console.log("✅ DOM Content Loaded");
-          });
-        } else {
-          console.log("✅ DOM Already Ready");
+            reb2b.factory = function (method) {
+              return function () {
+                var args = Array.prototype.slice.call(arguments);
+                args.unshift(method);
+                reb2b.push(args);
+                return reb2b;
+              };
+            };
+
+            for (var i = 0; i < reb2b.methods.length; i++) {
+              var key = reb2b.methods[i];
+              reb2b[key] = reb2b.factory(key);
+            }
+
+            reb2b.load = function (apiKey) {
+              var script = document.createElement("script");
+              script.async = true;
+              script.src =
+                "https://b2bjsstore.s3.us-west-2.amazonaws.com/b/" +
+                apiKey +
+                "/1N5W0HMDK0O5.js.gz";
+              script.onerror = function () {
+                /* Silent fail */
+              };
+              document.head.appendChild(script);
+            };
+
+            reb2b.SNIPPET_VERSION = "1.0.1";
+            reb2b.load("1N5W0HMDK0O5");
+          } catch (e) {
+            // Silent fail for maximum compatibility
+          }
         }
 
-        window.addEventListener("load", function () {
-          console.log("✅ Window Load Complete");
-          console.log(
-            "📊 Performance:",
-            performance.timing.loadEventEnd -
-              performance.timing.navigationStart +
-              "ms"
-          );
-        });
+        // Load RB2B only after everything else is ready
+        function safeLoad() {
+          if (
+            document.getElementById("root") &&
+            document.getElementById("root").innerHTML
+          ) {
+            loadRB2B();
+          } else {
+            setTimeout(safeLoad, 500);
+          }
+        }
 
-        // Check for common mobile issues
-        setTimeout(function () {
-          console.log(
-            "🔧 React Root:",
-            document.getElementById("root") ? "✅ Found" : "❌ Missing"
-          );
-          console.log(
-            "🔧 React Scripts:",
-            document.querySelectorAll('script[src*="main"]').length > 0
-              ? "✅ Found"
-              : "❌ Missing"
-          );
-        }, 1000);
+        // Start loading after a delay to ensure React app loads first
+        setTimeout(safeLoad, 3000);
       })();
     </script>
   </body>

@@ -13,6 +13,15 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: true,
+    target: ["es2015", "safari11", "chrome64", "firefox67"],
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          router: ["react-router-dom"],
+        },
+      },
+    },
   },
   assetsInclude: ["**/*.md"],
 });
