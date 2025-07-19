@@ -38,16 +38,24 @@ export const initializeLogging = () => {
   logPageView();
 
   // Log when user navigates (for SPA routing)
-  let currentPath = window.location.pathname;
-  const observer = new MutationObserver(() => {
-    if (window.location.pathname !== currentPath) {
-      currentPath = window.location.pathname;
-      logPageView();
-    }
-  });
+  try {
+    let currentPath = window.location.pathname;
+    const observer = new MutationObserver(() => {
+      if (window.location.pathname !== currentPath) {
+        currentPath = window.location.pathname;
+        logPageView();
+      }
+    });
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  } catch (error) {
+    console.warn(
+      "MutationObserver not supported, falling back to basic logging:",
+      error
+    );
+    // Fallback: just log the initial page view without route tracking
+  }
 };

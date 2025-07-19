@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import SunCalc from 'suncalc';
+import { useState, useEffect } from "react";
+import SunCalc from "suncalc";
 
-const NYC_LOCATION = { lat: 40.7128, lng: -74.0060 };
+const NYC_LOCATION = { lat: 40.7128, lng: -74.006 };
 
 function getThemeMessage(now: Date, isDark: boolean) {
   const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
@@ -31,15 +31,34 @@ export function useTheme() {
 
   useEffect(() => {
     const updateTheme = () => {
-      const now = new Date();
-      const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
-      const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
-      const sunset = new Date(times.sunset.getTime() - 30 * 60000);
-      const isDay = now > sunrise && now < sunset;
-      if (isAutoTheme) {
-        setIsDarkMode(!isDay);
+      try {
+        const now = new Date();
+        const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+        const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
+        const sunset = new Date(times.sunset.getTime() - 30 * 60000);
+        const isDay = now > sunrise && now < sunset;
+        if (isAutoTheme) {
+          setIsDarkMode(!isDay);
+        }
+        setThemeMessage(
+          getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode)
+        );
+      } catch (error) {
+        console.warn(
+          "SunCalc failed, falling back to time-based theme:",
+          error
+        );
+        // Fallback: use simple time-based logic (8am-8pm = light mode)
+        const now = new Date();
+        const hour = now.getHours();
+        const isDay = hour >= 8 && hour < 20;
+        if (isAutoTheme) {
+          setIsDarkMode(!isDay);
+        }
+        setThemeMessage(
+          getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode)
+        );
       }
-      setThemeMessage(getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode));
     };
     updateTheme();
     const interval = setInterval(updateTheme, 60000);
@@ -79,6 +98,6 @@ export function useTheme() {
     themeMessage,
     handleThemeClick,
     setIsDarkMode,
-    setIsAutoTheme
+    setIsAutoTheme,
   };
-} 
+}
