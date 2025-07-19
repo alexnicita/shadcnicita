@@ -5,29 +5,27 @@ import BlogIndex from "./components/BlogIndex";
 import BlogPost from "./components/BlogPost";
 import Privacy from "./components/Privacy";
 import { initializeLogging } from "./utils/logger";
-import { useRb2b } from "./hooks/useRb2b";
+// import { useRb2b } from "./hooks/useRb2b"; // Temporarily disabled for mobile debugging
 
 export default function Router() {
-  // Initialize RB2B tracking with auto page view tracking
-  const { isAvailable } = useRb2b({
-    autoTrack: true,
-    debug: import.meta.env.DEV,
-  });
+  // RB2B tracking temporarily disabled for mobile debugging
+  // const { isAvailable } = useRb2b({
+  //   autoTrack: true,
+  //   debug: import.meta.env.DEV,
+  // });
 
   // Initialize legacy logging when router mounts
   useEffect(() => {
     initializeLogging();
   }, []);
 
-  // Log RB2B status in development
+  // Debug logging for mobile troubleshooting
   useEffect(() => {
     if (import.meta.env.DEV) {
-      console.log(
-        "RB2B tracking status:",
-        isAvailable ? "✅ Active" : "⏳ Loading..."
-      );
+      console.log("🔧 Router mounted successfully");
+      console.log("📱 Mobile Debug Mode: Active");
     }
-  }, [isAvailable]);
+  }, []);
 
   return (
     <BrowserRouter>
