@@ -3,19 +3,52 @@ export interface BlogPost {
   title: string;
   date: string;
   description: string;
+  status: "published" | "draft";
 }
 
-export const blogPosts: BlogPost[] = [
+// Published posts that will be visible in production
+export const publishedPosts: BlogPost[] = [
+  // No published posts - everything is in drafts for testing
+];
+
+// Draft posts for development (not visible in production)
+export const draftPosts: BlogPost[] = [
   {
     slug: "hello-world",
     title: "Hello World",
-    date: new Date().toISOString().split("T")[0],
+    date: "2000-01-01",
     description: "Description",
+    status: "draft",
   },
   {
-    slug: "sample-post",
-    title: "Sample Post",
-    date: new Date().toISOString().split("T")[0],
-    description: "Another test post for the blog",
+    slug: "sample-draft",
+    title: "Sample Draft Post",
+    date: "2024-12-20",
+    description: "This is a draft post that won't be visible in production",
+    status: "draft",
   },
 ];
+
+// SECURITY: Environment-based filtering
+// Production builds will ONLY include published posts
+// Development builds include both published and draft posts
+const isProduction = import.meta.env.MODE === "production";
+
+export const blogPosts: BlogPost[] = [
+  ...publishedPosts,
+  // Only include drafts in development - NEVER in production
+  ...(isProduction ? [] : draftPosts),
+];
+
+// Runtime validation function for additional security
+export function isPostAccessible(slug: string): boolean {
+  const post = blogPosts.find((p) => p.slug === slug);
+  if (!post) return false;
+
+  // In production, only published posts are accessible
+  if (isProduction && post.status !== "published") {
+    return false;
+  }
+
+  return true;
+}

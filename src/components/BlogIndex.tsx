@@ -37,11 +37,14 @@ export default function BlogIndex() {
                   {post.title}
                 </h2>
                 <p className="text-muted-foreground text-sm mb-4">
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  {new Date(post.date + "T00:00:00").toLocaleDateString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    }
+                  )}
                 </p>
                 <p className="text-muted-foreground">{post.description}</p>
               </Link>

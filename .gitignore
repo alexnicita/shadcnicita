@@ -22,4 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.vercel
+
+# Blog drafts are included in git but excluded from production builds
+# See src/data/blogPosts.ts and vite.config.ts for exclusion logic

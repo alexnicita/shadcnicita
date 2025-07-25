@@ -78,10 +78,27 @@ export default function BlogPost() {
           return;
         }
 
+        // SECURITY: Block draft access in production
+        if (
+          blogPostData.status === "draft" &&
+          import.meta.env.MODE === "production"
+        ) {
+          setError("Post not found");
+          return;
+        }
+
         // Mobile-compatible markdown loading
         let markdownText = "";
         try {
-          const module = await import(`../blog/${slug}/index.md?raw`);
+          const folder =
+            blogPostData.status === "published" ? "published" : "drafts";
+
+          // SECURITY: Additional check - only load drafts in development
+          if (folder === "drafts" && import.meta.env.MODE === "production") {
+            throw new Error("Draft access blocked in production");
+          }
+
+          const module = await import(`../blog/${folder}/${slug}/index.md?raw`);
           markdownText = module.default;
         } catch (importError) {
           console.warn("Failed to load markdown, using fallback");
@@ -156,7 +173,7 @@ export default function BlogPost() {
             </h1>
             {post.date && (
               <p className="text-muted-foreground text-sm">
-                {new Date(post.date).toLocaleDateString("en-US", {
+                {new Date(post.date + "T00:00:00").toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
