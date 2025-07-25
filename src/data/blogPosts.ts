@@ -20,13 +20,6 @@ export const draftPosts: BlogPost[] = [
     description: "Description",
     status: "draft",
   },
-  {
-    slug: "sample-draft",
-    title: "Sample Draft Post",
-    date: "2024-12-20",
-    description: "This is a draft post that won't be visible in production",
-    status: "draft",
-  },
 ];
 
 // SECURITY: Environment-based filtering
