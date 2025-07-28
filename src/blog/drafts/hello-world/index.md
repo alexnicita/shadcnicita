@@ -1,6 +1,5 @@
 ---
 title: "Hello World"
-date: "2000-01-01"
 description: "Description"
 ---
 
