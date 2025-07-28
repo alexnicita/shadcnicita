@@ -109,7 +109,7 @@ export default function BlogPost() {
         // Use the title and date from blogPosts array, content from markdown
         const postData: PostData = {
           title: blogPostData.title,
-          date: blogPostData.date,
+          date: blogPostData.date || "",
           description: blogPostData.description,
           content: parsedData.content,
         };
@@ -171,7 +171,7 @@ export default function BlogPost() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               {post.title}
             </h1>
-            {post.date && (
+            {post.date && post.date.trim() !== "" && (
               <p className="text-muted-foreground text-sm">
                 {new Date(post.date + "T00:00:00").toLocaleDateString("en-US", {
                   year: "numeric",
