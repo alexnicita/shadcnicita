@@ -6,6 +6,8 @@
 
 Build your React landing page effortlessly with the required sections to your project. <a href="https://nicita.cc/" target="_blank">Live Demo</a>
 
+**Contact: alex@nicita.cc**
+
 ## Project Structure
 
 ```
