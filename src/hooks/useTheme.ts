@@ -21,7 +21,11 @@ function getThemeMessage(now: Date, isDark: boolean) {
   const minutes = Math.floor(
     (timeUntilChange.getTime() % (1000 * 60 * 60)) / (1000 * 60)
   );
-  return `${hours}h ${minutes}m`;
+
+  // Pad both hours and minutes with leading zeros for consistent spacing
+  const paddedHours = hours.toString().padStart(2, "0");
+  const paddedMinutes = minutes.toString().padStart(2, "0");
+  return `${paddedHours}h ${paddedMinutes}m`;
 }
 
 export function useTheme() {

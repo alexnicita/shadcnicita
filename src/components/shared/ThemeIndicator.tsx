@@ -98,9 +98,11 @@ export default function ThemeIndicator({
               isDarkMode={isDarkMode}
               handleThemeClick={handleThemeClick}
             />
-            <span className="text-xs text-muted-foreground whitespace-nowrap">
-              {themeMessage}
-            </span>
+            <div className="min-w-[3.5rem] text-center">
+              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                {themeMessage}
+              </span>
+            </div>
           </div>
         </div>
       )}
@@ -112,9 +114,11 @@ export default function ThemeIndicator({
             isDarkMode={isDarkMode}
             handleThemeClick={handleThemeClick}
           />
-          <span className="text-sm text-muted-foreground whitespace-nowrap">
-            {themeMessage}
-          </span>
+          <div className="min-w-[4rem] text-center">
+            <span className="text-sm text-muted-foreground whitespace-nowrap">
+              {themeMessage}
+            </span>
+          </div>
         </div>
       )}
     </>
