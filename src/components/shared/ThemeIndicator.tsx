@@ -93,7 +93,7 @@ export default function ThemeIndicator({
       {(variant === "mobile" || variant === "both") && (
         <div className={mobileStyles}>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground lowercase">nyc</span>
+            <span className="text-xs text-muted-foreground">LA</span>
             <ThemeButton
               isDarkMode={isDarkMode}
               handleThemeClick={handleThemeClick}
@@ -107,7 +107,7 @@ export default function ThemeIndicator({
 
       {(variant === "desktop" || variant === "both") && !showInContent && (
         <div className="hidden md:flex fixed z-40 bottom-8 right-8 items-center gap-2">
-          <span className="text-sm text-muted-foreground lowercase">nyc</span>
+          <span className="text-sm text-muted-foreground">LA</span>
           <ThemeButton
             isDarkMode={isDarkMode}
             handleThemeClick={handleThemeClick}
