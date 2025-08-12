@@ -22,7 +22,7 @@ export type BlogPost = PublishedPost | DraftPost;
 // Published posts that will be visible in production
 export const publishedPosts: PublishedPost[] = [
   {
-    slug: "hello-world",
+    slug: "market-antonym",
     title: "Antonym of Market",
     description: "Defining the opposite of a market to reveal what makes markets good.",
     status: "published",
