@@ -74,12 +74,12 @@ function App() {
           >
             thesis
           </a>
-          {/* <a
+          <a
             href="/blog"
             className="block text-muted-foreground hover:text-foreground transition-colors"
           >
             blog
-          </a> */}
+          </a>
           <a
             href="https://alexnicita.com"
             target="_blank"
