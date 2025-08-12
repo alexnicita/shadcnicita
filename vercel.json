@@ -1,5 +1,24 @@
 {
+  "headers": [
+    {
+      "source": "/blog/:slug",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "all" }
+      ]
+    }
+  ],
   "rewrites": [
+    {
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Twitterbot|LinkedInBot|Slackbot|Discord|Telegram|WhatsApp|SkypeUriPreview|Googlebot).*$"
+        }
+      ],
+      "source": "/blog/:slug",
+      "destination": "/api/blog-preview?slug=:slug"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
