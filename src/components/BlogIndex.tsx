@@ -5,6 +5,59 @@ import { blogPosts } from "../data/blogPosts";
 
 export default function BlogIndex() {
   const [isLoading, setIsLoading] = useState(true);
+  const [excerptsBySlug, setExcerptsBySlug] = useState<Record<string, string>>({});
+
+  // Extract the content area after frontmatter and return first two sentences
+  function extractFirstTwoSentences(markdownRaw: string): string {
+    const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+    const match = markdownRaw.match(frontmatterRegex);
+    const content = match ? match[2] : markdownRaw;
+
+    // Remove images and basic markdown syntax for a cleaner excerpt
+    const withoutImages = content.replace(/!\[[^\]]*\]\([^)]*\)/g, "");
+    const withoutHeaders = withoutImages.replace(/^#{1,6}\s+/gm, "");
+    const withoutBlockquotes = withoutHeaders.replace(/^>\s?/gm, "");
+    const inlineClean = withoutBlockquotes
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/\*(.*?)\*/g, "$1")
+      .replace(/`([^`]*)`/g, "$1");
+
+    const normalized = inlineClean.replace(/\s+/g, " ").trim();
+    if (!normalized) return "";
+    const sentences = normalized.split(/(?<=[.!?])\s+/);
+    return sentences.slice(0, 2).join(" ").trim();
+  }
+
+  // Load excerpts for each post from its markdown
+  useEffect(() => {
+    let isCancelled = false;
+    const load = async () => {
+      const results: Record<string, string> = {};
+      await Promise.all(
+        blogPosts.map(async (post) => {
+          try {
+            const folder = post.status === "published" ? "published" : "drafts";
+            // SECURITY: Only load drafts in development
+            if (folder === "drafts" && import.meta.env.MODE === "production") {
+              results[post.slug] = post.description;
+              return;
+            }
+            const mod = await import(`../blog/${folder}/${post.slug}/index.md?raw`);
+            const raw = mod.default as string;
+            const excerpt = extractFirstTwoSentences(raw);
+            results[post.slug] = excerpt || post.description;
+          } catch (_err) {
+            results[post.slug] = post.description;
+          }
+        })
+      );
+      if (!isCancelled) setExcerptsBySlug(results);
+    };
+    load();
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -48,7 +101,9 @@ export default function BlogIndex() {
                         }
                       )}
                 </p>
-                <p className="text-muted-foreground">{post.description}</p>
+                <p className="text-muted-foreground">
+                  {excerptsBySlug[post.slug] ?? post.description}
+                </p>
               </Link>
             </article>
           ))}
