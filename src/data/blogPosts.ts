@@ -21,18 +21,17 @@ export type BlogPost = PublishedPost | DraftPost;
 
 // Published posts that will be visible in production
 export const publishedPosts: PublishedPost[] = [
-  // No published posts - everything is in drafts for testing
+  {
+    slug: "hello-world",
+    title: "Antonym of Market",
+    description: "Defining the opposite of a market to reveal what makes markets good.",
+    status: "published",
+    date: "2025-08-12",
+  },
 ];
 
 // Draft posts for development (not visible in production)
-export const draftPosts: DraftPost[] = [
-  {
-    slug: "hello-world",
-    title: "Hello World",
-    description: "Description",
-    status: "draft",
-  },
-];
+export const draftPosts: DraftPost[] = [];
 
 // SECURITY: Environment-based filtering
 // Production builds will ONLY include published posts
