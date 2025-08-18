@@ -32,26 +32,10 @@ export const draftPosts: DraftPost[] = [
   },
 ];
 
-// SECURITY: Environment-based filtering
-// Production builds will ONLY include published posts
-// Development builds include both published and draft posts
-const isProduction = import.meta.env.MODE === "production";
-
-export const blogPosts: BlogPost[] = [
-  ...publishedPosts,
-  // Only include drafts in development - NEVER in production
-  ...(isProduction ? [] : draftPosts),
-];
+// SECURITY: Only expose published posts to the app (both dev and prod)
+export const blogPosts: BlogPost[] = [...publishedPosts];
 
 // Runtime validation function for additional security
 export function isPostAccessible(slug: string): boolean {
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) return false;
-
-  // In production, only published posts are accessible
-  if (isProduction && post.status !== "published") {
-    return false;
-  }
-
-  return true;
+  return publishedPosts.some((p) => p.slug === slug);
 }
