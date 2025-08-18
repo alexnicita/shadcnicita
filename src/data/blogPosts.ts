@@ -20,18 +20,17 @@ interface DraftPost extends BaseBlogPost {
 export type BlogPost = PublishedPost | DraftPost;
 
 // Published posts that will be visible in production
-export const publishedPosts: PublishedPost[] = [
+export const publishedPosts: PublishedPost[] = [];
+
+// Draft posts for development (not visible in production)
+export const draftPosts: DraftPost[] = [
   {
     slug: "market-antonym",
     title: "Antonym of Market",
     description: "Defining the opposite of a market to reveal what makes markets good.",
-    status: "published",
-    date: "2025-08-12",
+    status: "draft",
   },
 ];
-
-// Draft posts for development (not visible in production)
-export const draftPosts: DraftPost[] = [];
 
 // SECURITY: Environment-based filtering
 // Production builds will ONLY include published posts
