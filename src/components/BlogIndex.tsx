@@ -7,8 +7,8 @@ export default function BlogIndex() {
   const [isLoading, setIsLoading] = useState(true);
   const [excerptsBySlug, setExcerptsBySlug] = useState<Record<string, string>>({});
 
-  // Extract the content area after frontmatter and return first two sentences
-  function extractFirstTwoSentences(markdownRaw: string): string {
+  // Extract the content area after frontmatter and return the first sentence
+  function extractFirstSentence(markdownRaw: string): string {
     const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
     const match = markdownRaw.match(frontmatterRegex);
     const content = match ? match[2] : markdownRaw;
@@ -25,7 +25,7 @@ export default function BlogIndex() {
     const normalized = inlineClean.replace(/\s+/g, " ").trim();
     if (!normalized) return "";
     const sentences = normalized.split(/(?<=[.!?])\s+/);
-    return sentences.slice(0, 2).join(" ").trim();
+    return sentences[0]?.trim() ?? "";
   }
 
   // Load excerpts for each post from its markdown
@@ -44,7 +44,7 @@ export default function BlogIndex() {
             }
             const mod = await import(`../blog/${folder}/${post.slug}/index.md?raw`);
             const raw = mod.default as string;
-            const excerpt = extractFirstTwoSentences(raw);
+            const excerpt = extractFirstSentence(raw);
             results[post.slug] = excerpt || post.description;
           } catch (_err) {
             results[post.slug] = post.description;

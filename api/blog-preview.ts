@@ -28,7 +28,7 @@ function parseFrontmatter(markdown: string): {
   };
 }
 
-function firstTwoSentences(text: string): string {
+function firstSentence(text: string): string {
   const cleaned = text
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/^#{1,6}\s+/gm, "")
@@ -40,7 +40,7 @@ function firstTwoSentences(text: string): string {
     .trim();
   if (!cleaned) return "";
   const sentences = cleaned.split(/(?<=[.!?])\s+/);
-  return sentences.slice(0, 2).join(" ");
+  return sentences[0] || "";
 }
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
@@ -70,7 +70,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   const proto = (req.headers["x-forwarded-proto"] as string) || "https";
   const origin = `${proto}://${host}`;
   const url = `${origin}/blog/${slug}`;
-  const desc = description && description.trim().length > 0 ? description : firstTwoSentences(content);
+  const desc = description && description.trim().length > 0 ? description : firstSentence(content);
   const image = `${origin}/og-image.svg`;
   const safeTitle = (title && title.trim()) || "Blog Post";
   const safeDesc = (desc && desc.trim()) || "Read the latest article.";

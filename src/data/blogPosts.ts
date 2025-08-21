@@ -24,8 +24,7 @@ export const publishedPosts: PublishedPost[] = [
   {
     slug: "antonym-of-the-market",
     title: "Antonym of the Market",
-    description:
-      "Nobody has a one word answer. Volunteers, friends, family––these seem to be good choices.",
+    description: "Nobody has a one word answer.",
     status: "published",
     date: "2025-08-21",
   },

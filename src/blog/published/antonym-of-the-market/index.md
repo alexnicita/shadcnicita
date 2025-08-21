@@ -1,6 +1,6 @@
 ---
 title: "Antonym of the Market"
-description: "Nobody has a one word answer. Volunteers, friends, family––these seem to be good choices."
+description: "Nobody has a one word answer."
 date: "2025-08-21"
 ---
 
