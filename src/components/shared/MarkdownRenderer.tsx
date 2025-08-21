@@ -8,6 +8,9 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const processedContent = useMemo(() => {
     // Lightweight markdown parsing optimized for your specific content
     let processed = content
+      // Normalize double hyphens/en-dashes to a single em dash without spaces
+      .replace(/\s?--\s?/g, "—")
+      .replace(/\s?–\s?–\s?/g, "—")
       // Headers
       .replace(
         /^## (.+)$/gm,
