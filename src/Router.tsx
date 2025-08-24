@@ -5,6 +5,7 @@ import BlogIndex from "./components/BlogIndex";
 import BlogPost from "./components/BlogPost";
 import Privacy from "./components/Privacy";
 import { initializeLogging } from "./utils/logger";
+import RB2BLoader from "./components/shared/RB2BLoader";
 
 export default function Router() {
   // Initialize legacy logging when router mounts
@@ -14,6 +15,7 @@ export default function Router() {
 
   return (
     <BrowserRouter>
+      <RB2BLoader />
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/blog" element={<BlogIndex />} />
