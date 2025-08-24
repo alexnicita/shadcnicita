@@ -1,3 +1,6 @@
+# Env
+.env
+
 # Logs
 logs
 *.log
@@ -25,3 +28,7 @@ dist-ssr
 
 # Blog drafts are included in git but excluded from production builds
 # See src/data/blogPosts.ts and vite.config.ts for exclusion logic
+
+# Environment files
+.env
+.env.*
