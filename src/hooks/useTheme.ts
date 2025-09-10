@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import SunCalc from "suncalc";
 
-const NYC_LOCATION = { lat: 40.7128, lng: -74.006 };
+const SF_LOCATION = { lat: 37.7749, lng: -122.4194 };
 
 function getThemeMessage(now: Date, isDark: boolean) {
-  const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+  const times = SunCalc.getTimes(now, SF_LOCATION.lat, SF_LOCATION.lng);
   let nextChange;
   if (isDark) {
     // Night: time until sunrise
@@ -37,7 +37,7 @@ export function useTheme() {
     const updateTheme = () => {
       try {
         const now = new Date();
-        const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+        const times = SunCalc.getTimes(now, SF_LOCATION.lat, SF_LOCATION.lng);
         const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
         const sunset = new Date(times.sunset.getTime() - 30 * 60000);
         const isDay = now > sunrise && now < sunset;
