@@ -14,8 +14,35 @@ function App() {
   }, []);
 
   return (
-    <BaseLayout showLoading={isLoading} className="p-8 md:p-16">
-      <header className="flex justify-between items-center mb-16">
+    <BaseLayout
+      showLoading={isLoading}
+      className="p-8 md:p-16"
+      afterThemeIndicator={
+        /* Phone number - Mobile version (below theme indicator) */
+        <div className="block md:hidden w-full flex justify-center mt-4">
+          <a
+            href="tel:+13322236026"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            +1 (332) 223-6026
+          </a>
+        </div>
+      }
+    >
+      <header className="flex justify-between items-center mb-16 md:-ml-8 md:-mr-8">
         <h1 className="text-2xl font-bold">alexander nicita</h1>
         <div className="flex items-center gap-2">
           <button
@@ -128,6 +155,29 @@ function App() {
           </div>
         </footer>
       </main>
+
+      {/* Phone number - Desktop version (bottom left corner) */}
+      <div className="hidden md:flex fixed z-40 bottom-8 left-8 items-center gap-2">
+        <a
+          href="tel:+13322236026"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          +1 (332) 223-6026
+        </a>
+      </div>
     </BaseLayout>
   );
 }

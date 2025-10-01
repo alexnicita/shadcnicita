@@ -9,6 +9,7 @@ interface BaseLayoutProps {
   showThemeIndicator?: boolean;
   className?: string;
   loadingText?: string;
+  afterThemeIndicator?: ReactNode;
 }
 
 export default function BaseLayout({
@@ -17,6 +18,7 @@ export default function BaseLayout({
   showThemeIndicator = true,
   className = "",
   loadingText = "an",
+  afterThemeIndicator,
 }: BaseLayoutProps) {
   // Ensure theme is applied across all pages
   useTheme();
@@ -32,6 +34,8 @@ export default function BaseLayout({
         {children}
 
         {showThemeIndicator && <ThemeIndicator />}
+
+        {afterThemeIndicator}
       </div>
     </>
   );
