@@ -92,13 +92,17 @@ export default function ThemeIndicator({
     <>
       {(variant === "mobile" || variant === "both") && (
         <div className={mobileStyles}>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">SF</span>
-            <ThemeButton
-              isDarkMode={isDarkMode}
-              handleThemeClick={handleThemeClick}
-            />
-            <div className="min-w-[3.5rem] text-center">
+          <div className="flex items-end gap-2">
+            <div className="min-w-[2rem] text-center pb-[2px]">
+              <span className="text-xs text-muted-foreground">NYC</span>
+            </div>
+            <div className="pt-[4px]">
+              <ThemeButton
+                isDarkMode={isDarkMode}
+                handleThemeClick={handleThemeClick}
+              />
+            </div>
+            <div className="min-w-[3.5rem] text-center pb-[2px]">
               <span className="text-xs text-muted-foreground whitespace-nowrap">
                 {themeMessage}
               </span>
@@ -108,13 +112,17 @@ export default function ThemeIndicator({
       )}
 
       {(variant === "desktop" || variant === "both") && !showInContent && (
-        <div className="hidden md:flex fixed z-40 bottom-8 right-8 items-center gap-2">
-          <span className="text-sm text-muted-foreground">SF</span>
-          <ThemeButton
-            isDarkMode={isDarkMode}
-            handleThemeClick={handleThemeClick}
-          />
-          <div className="min-w-[4rem] text-center">
+        <div className="hidden md:flex fixed z-40 bottom-8 right-8 items-end gap-2">
+          <div className="min-w-[2.5rem] text-center pb-[3px]">
+            <span className="text-sm text-muted-foreground">NYC</span>
+          </div>
+          <div className="pt-[5px]">
+            <ThemeButton
+              isDarkMode={isDarkMode}
+              handleThemeClick={handleThemeClick}
+            />
+          </div>
+          <div className="min-w-[4rem] text-center pb-[3px]">
             <span className="text-sm text-muted-foreground whitespace-nowrap">
               {themeMessage}
             </span>

@@ -16,7 +16,7 @@ function App() {
   return (
     <BaseLayout
       showLoading={isLoading}
-      className="p-8 md:p-16"
+      className="p-8 md:px-16 md:pb-16 md:pt-8"
       afterThemeIndicator={
         /* Phone number - Mobile version (below theme indicator) */
         <div className="block md:hidden w-full flex justify-center mt-4">
@@ -42,7 +42,7 @@ function App() {
         </div>
       }
     >
-      <header className="flex justify-between items-center mb-16 md:-ml-8 md:-mr-8">
+      <header className="flex justify-between items-center mb-16 md:mb-24 md:-ml-8 md:-mr-8">
         <h1 className="text-2xl font-bold">alexander nicita</h1>
         <div className="flex items-center gap-2">
           <button
