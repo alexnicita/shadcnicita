@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import ThemeIndicator from "./ThemeIndicator";
 import LoadingAnimation from "./LoadingAnimation";
-import ColorPaletteLauncher from "../ColorPaletteLauncher";
 
 interface BaseLayoutProps {
   children: ReactNode;
@@ -47,8 +46,6 @@ export default function BaseLayout({
         ) : (
           afterThemeIndicator
         )}
-
-        <ColorPaletteLauncher className="hidden md:flex" />
       </div>
     </>
   );
