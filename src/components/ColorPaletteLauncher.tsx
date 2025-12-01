@@ -42,10 +42,6 @@ export default function ColorPaletteLauncher({
   const [isExpanded, setIsExpanded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const currentPalette = useMemo(
-    () => THEME_PALETTES[paletteId],
-    [paletteId]
-  );
   const spacing = variant === "inline" ? 32 : 44;
   const isInline = variant === "inline";
   const offsets = useMemo(
