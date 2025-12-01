@@ -85,28 +85,22 @@ export default function ThemeIndicator({
   const { isDarkMode, themeMessage, handleThemeClick } = useTheme();
 
   const mobileStyles = showInContent
-    ? "flex w-full justify-center"
+    ? "flex justify-start"
     : "block md:hidden w-full flex justify-center mt-8";
 
   return (
     <>
       {(variant === "mobile" || variant === "both") && (
         <div className={mobileStyles}>
-          <div className="flex items-end gap-2">
-            <div className="min-w-[2rem] text-center pb-[2px]">
-              <span className="text-xs text-muted-foreground">NYC</span>
-            </div>
-            <div className="pt-[4px]">
-              <ThemeButton
-                isDarkMode={isDarkMode}
-                handleThemeClick={handleThemeClick}
-              />
-            </div>
-            <div className="min-w-[3.5rem] text-center pb-[2px]">
-              <span className="text-xs text-muted-foreground whitespace-nowrap">
-                {themeMessage}
-              </span>
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">NYC</span>
+            <ThemeButton
+              isDarkMode={isDarkMode}
+              handleThemeClick={handleThemeClick}
+            />
+            <span className="text-xs text-muted-foreground whitespace-nowrap">
+              {themeMessage}
+            </span>
           </div>
         </div>
       )}

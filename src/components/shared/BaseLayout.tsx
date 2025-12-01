@@ -28,15 +28,17 @@ export default function BaseLayout({
     <>
       {showLoading && <LoadingAnimation text={loadingText} />}
       <div
-        className={`min-h-screen bg-background text-foreground transition-colors duration-200 relative ${
+        className={`min-h-screen bg-background text-foreground transition-colors duration-200 relative flex flex-col ${
           showLoading ? "opacity-0" : "opacity-100"
         } transition-opacity duration-1000 ${className}`}
       >
-        {children}
+        <div className="flex-1">
+          {children}
+        </div>
 
         {showThemeIndicator ? (
           <>
-            <div className="md:hidden flex flex-col items-center gap-3 mt-6">
+            <div className="md:hidden mt-16 pb-8 flex flex-col items-start gap-2 relative z-20">
               <ThemeIndicator variant="mobile" showInContent />
               {afterThemeIndicator}
             </div>

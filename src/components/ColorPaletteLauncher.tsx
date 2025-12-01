@@ -9,8 +9,13 @@ import {
 import { useTheme as useUiTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 
-const computeOffsets = (count: number, spacing: number) => {
+const computeOffsets = (count: number, spacing: number, alignLeft = false) => {
   if (count <= 1) return [0];
+  if (alignLeft) {
+    // Start at 0 and extend to the right
+    return Array.from({ length: count }, (_, index) => index * spacing);
+  }
+  // Center the items
   const start = -((count - 1) / 2) * spacing;
   return Array.from({ length: count }, (_, index) => start + index * spacing);
 };
@@ -42,9 +47,10 @@ export default function ColorPaletteLauncher({
     [paletteId]
   );
   const spacing = variant === "inline" ? 32 : 44;
+  const isInline = variant === "inline";
   const offsets = useMemo(
-    () => computeOffsets(paletteChoices.length, spacing),
-    [paletteChoices.length, spacing]
+    () => computeOffsets(paletteChoices.length, spacing, isInline),
+    [paletteChoices.length, spacing, isInline]
   );
   const { theme: baseTheme } = useUiTheme();
   const isDarkMode =
@@ -56,15 +62,14 @@ export default function ColorPaletteLauncher({
   const mode: "light" | "dark" = isDarkMode ? "dark" : "light";
   const currentSwatchColor = getPreviewColor(paletteId, mode);
   const triggerSize = "h-5 w-5";
-  const triggerOffset =
-    variant === "inline" ? "translate-y-[2px]" : "-translate-y-[2px]";
+  const triggerOffset = "-translate-y-[10px]";
   const rootClass =
     variant === "inline"
-      ? "w-full flex justify-center"
+      ? "flex justify-start"
       : "hidden md:flex fixed bottom-4 left-1/2 z-40 -translate-x-1/2 sm:bottom-6";
   const containerClass =
     variant === "inline"
-      ? "relative h-10 w-20 translate-y-0.5"
+      ? "relative h-10 translate-y-0.5"
       : "relative h-12 w-24";
 
   useEffect(() => {
@@ -112,12 +117,17 @@ export default function ColorPaletteLauncher({
               style={{
                 backgroundColor: previewColor,
                 transform: isExpanded
-                  ? `translate(calc(-50% + ${offsetX}px), -50%) scale(1)`
-                  : "translate(-50%, -50%) scale(0.3)",
+                  ? isInline
+                    ? `translate(${offsetX}px, -50%) scale(1)`
+                    : `translate(calc(-50% + ${offsetX}px), -50%) scale(1)`
+                  : isInline
+                    ? "translate(0, -50%) scale(0.3)"
+                    : "translate(-50%, -50%) scale(0.3)",
                 transitionDelay: `${index * 45}ms`,
               }}
               className={cn(
-                "absolute left-1/2 top-1/2 h-5 w-5 rounded-full border border-border/50 shadow-[0_3px_8px_rgba(0,0,0,0.12)] outline-none transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+                "absolute top-1/2 h-5 w-5 rounded-full border border-border/50 shadow-[0_3px_8px_rgba(0,0,0,0.12)] outline-none transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+                isInline ? "left-0" : "left-1/2",
                 isExpanded ? "opacity-100" : "opacity-0",
                 isActive && "ring-2 ring-ring ring-offset-2 ring-offset-background"
               )}
@@ -136,7 +146,8 @@ export default function ColorPaletteLauncher({
           onDoubleClick={handleReset}
           style={{ backgroundColor: currentSwatchColor }}
           className={cn(
-            "absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 shadow-[0_6px_14px_rgba(0,0,0,0.18)] transition-all duration-200 ease-out",
+            "absolute top-1/2 flex items-center justify-center rounded-full border border-border/70 shadow-[0_6px_14px_rgba(0,0,0,0.18)] transition-all duration-200 ease-out",
+            isInline ? "left-0 -translate-y-1/2" : "left-1/2 -translate-x-1/2 -translate-y-1/2",
             triggerSize,
             triggerOffset,
             isExpanded
