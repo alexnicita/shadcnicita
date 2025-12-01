@@ -109,40 +109,47 @@ function App() {
                 software engineer at startups
               </span>
             </p>
+            <p
+              className={`text-muted-foreground mb-8 ${isMenuOpen ? "block" : "hidden"}`}
+            >
+              more: <br />
+              <span className="text-foreground">
+                <a
+                  href="https://ans.consulting"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-muted-foreground transition-colors"
+                >
+                  consulting
+                </a>
+                {" · "}
+                <a
+                  href="https://academiccommons.columbia.edu/doi/10.7916/wxey-cr42"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-muted-foreground transition-colors"
+                >
+                  thesis
+                </a>
+                {" · "}
+                <a
+                  href="/blog"
+                  className="underline hover:text-muted-foreground transition-colors"
+                >
+                  blog
+                </a>
+                {" · "}
+                <a
+                  href="https://alexnicita.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-muted-foreground transition-colors"
+                >
+                  os
+                </a>
+              </span>
+            </p>
           </section>
-
-          <nav className={`${isMenuOpen ? "block" : "hidden"} space-y-4`}>
-            <a
-              href="https://ans.consulting"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              consulting
-            </a>
-            <a
-              href="https://academiccommons.columbia.edu/doi/10.7916/wxey-cr42"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              thesis
-            </a>
-            <a
-              href="/blog"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              blog
-            </a>
-            <a
-              href="https://alexnicita.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              os
-            </a>
-          </nav>
 
           <footer className="mt-16 text-sm text-muted-foreground">
             <p className="font-medium text-foreground">
