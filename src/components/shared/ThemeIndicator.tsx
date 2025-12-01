@@ -85,7 +85,7 @@ export default function ThemeIndicator({
   const { isDarkMode, themeMessage, handleThemeClick } = useTheme();
 
   const mobileStyles = showInContent
-    ? "flex justify-center mt-8"
+    ? "flex w-full justify-center"
     : "block md:hidden w-full flex justify-center mt-8";
 
   return (

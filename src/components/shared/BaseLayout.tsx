@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import ThemeIndicator from "./ThemeIndicator";
 import LoadingAnimation from "./LoadingAnimation";
+import ColorPaletteLauncher from "../ColorPaletteLauncher";
 
 interface BaseLayoutProps {
   children: ReactNode;
@@ -33,9 +34,19 @@ export default function BaseLayout({
       >
         {children}
 
-        {showThemeIndicator && <ThemeIndicator />}
+        {showThemeIndicator ? (
+          <>
+            <div className="md:hidden flex flex-col items-center gap-3 mt-6">
+              <ThemeIndicator variant="mobile" showInContent />
+              {afterThemeIndicator}
+            </div>
+            <ThemeIndicator variant="desktop" />
+          </>
+        ) : (
+          afterThemeIndicator
+        )}
 
-        {afterThemeIndicator}
+        <ColorPaletteLauncher className="hidden md:flex" />
       </div>
     </>
   );
