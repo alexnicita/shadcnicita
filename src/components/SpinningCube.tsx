@@ -12,7 +12,7 @@ export default function SpinningCube({
 }: SpinningCubeProps) {
   const cubeRef = useRef<HTMLDivElement>(null);
 
-  useAnimationFrame((t) => {
+  useAnimationFrame((t: number) => {
     if (!cubeRef.current) return;
 
     const rotate = Math.sin(t / 10000) * 200;
