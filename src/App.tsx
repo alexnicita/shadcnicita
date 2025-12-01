@@ -24,7 +24,7 @@ function App() {
       afterThemeIndicator={
         <div className="text-xs text-muted-foreground">
           <div className="flex flex-col items-start gap-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2 px-2">
               <span>AI</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -42,8 +42,8 @@ function App() {
               <Button
                 asChild
                 variant="outline"
-                size="sm"
-                className="font-medium"
+                size="xs"
+                className="font-medium text-xs"
               >
                 <a href="tel:+13322236026">+1 (332) 223-6026</a>
               </Button>
