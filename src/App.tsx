@@ -24,7 +24,7 @@ function App() {
       afterThemeIndicator={
         <div className="text-xs text-muted-foreground">
           <div className="flex flex-col items-start gap-2">
-            <div className="flex items-center gap-2 px-2">
+            <div className="flex items-center gap-2">
               <span>AI</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
