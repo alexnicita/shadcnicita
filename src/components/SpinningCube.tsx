@@ -34,17 +34,23 @@ export default function SpinningCube({
 
     const rotate = Math.sin(t / 10000) * 100;
     const y = (1 + Math.sin(t / 1000)) * -10;
-    cubeRef.current.style.transform = `translateY(${y}px) rotateX(${rotate}deg) rotateY(${rotate}deg)`;
+    const transformValue = `translateY(${y}px) rotateX(${rotate}deg) rotateY(${rotate}deg)`;
+    cubeRef.current.style.transform = transformValue;
+    // Safari-specific: ensure webkit prefix is set
+    cubeRef.current.style.webkitTransform = transformValue;
   });
 
   const quarterSize = size / 4;
 
   return (
     <div
-      className="flex justify-center items-center cursor-pointer"
+      className="cube-scene flex justify-center items-center cursor-pointer"
       onClick={onClick}
       style={{
         perspective: "800px",
+        WebkitPerspective: "800px",
+        perspectiveOrigin: "center center",
+        WebkitPerspectiveOrigin: "center center",
         // Smooth fade-in to hide any initial frame glitches
         opacity: isReady ? 1 : 0,
         transition: "opacity 0.15s ease-out",
@@ -58,6 +64,7 @@ export default function SpinningCube({
           height: size,
           position: "relative",
           transformStyle: "preserve-3d",
+          WebkitTransformStyle: "preserve-3d",
           // Set initial transform to match animation start state
           transform: getInitialTransform(),
         }}
@@ -67,6 +74,7 @@ export default function SpinningCube({
           className="cube-side"
           style={{
             transform: `translateZ(${quarterSize}px)`,
+            WebkitTransform: `translateZ(${quarterSize}px)`,
           }}
         />
         {/* Back */}
@@ -74,6 +82,7 @@ export default function SpinningCube({
           className="cube-side"
           style={{
             transform: `rotateY(180deg) translateZ(${quarterSize}px)`,
+            WebkitTransform: `rotateY(180deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Left */}
@@ -81,6 +90,7 @@ export default function SpinningCube({
           className="cube-side"
           style={{
             transform: `rotateY(-90deg) translateZ(${quarterSize}px)`,
+            WebkitTransform: `rotateY(-90deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Right */}
@@ -88,6 +98,7 @@ export default function SpinningCube({
           className="cube-side"
           style={{
             transform: `rotateY(90deg) translateZ(${quarterSize}px)`,
+            WebkitTransform: `rotateY(90deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Top */}
@@ -95,6 +106,7 @@ export default function SpinningCube({
           className="cube-side"
           style={{
             transform: `rotateX(90deg) translateZ(${quarterSize}px)`,
+            WebkitTransform: `rotateX(90deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Bottom */}
@@ -102,6 +114,7 @@ export default function SpinningCube({
           className="cube-side"
           style={{
             transform: `rotateX(-90deg) translateZ(${quarterSize}px)`,
+            WebkitTransform: `rotateX(-90deg) translateZ(${quarterSize}px)`,
           }}
         />
       </div>
