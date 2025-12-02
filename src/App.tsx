@@ -5,6 +5,9 @@ import { Button } from "./components/ui/button";
 import ColorPaletteLauncher from "./components/ColorPaletteLauncher";
 import SpinningCube from "./components/SpinningCube";
 
+// TODO: Add startup angel investments section somewhere on the site
+// TODO: Redo cube interaction - consider adding links on home page and removing cube click entirely
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
