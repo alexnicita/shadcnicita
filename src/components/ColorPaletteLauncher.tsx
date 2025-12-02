@@ -122,10 +122,10 @@ export default function ColorPaletteLauncher({
                 transitionDelay: `${index * 45}ms`,
               }}
               className={cn(
-                "absolute top-1/2 h-5 w-5 rounded-full border border-border/50 shadow-[0_3px_8px_rgba(0,0,0,0.12)] outline-none transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+                "absolute top-1/2 h-5 w-5 rounded-full border border-border/20 shadow-sm outline-none transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] hover:border-border/40 focus-visible:ring-1 focus-visible:ring-ring/50",
                 isInline ? "left-0" : "left-1/2",
                 isExpanded ? "opacity-100" : "opacity-0",
-                isActive && "ring-2 ring-ring ring-offset-2 ring-offset-background"
+                isActive && "ring-1 ring-foreground/20 ring-offset-1 ring-offset-background"
               )}
             />
           );
@@ -142,14 +142,14 @@ export default function ColorPaletteLauncher({
           onDoubleClick={handleReset}
           style={{ backgroundColor: currentSwatchColor }}
           className={cn(
-            "absolute top-1/2 flex items-center justify-center rounded-full border border-border/70 shadow-[0_6px_14px_rgba(0,0,0,0.18)] transition-all duration-200 ease-out",
+            "absolute top-1/2 flex items-center justify-center rounded-full border border-border/20 shadow-sm transition-all duration-200 ease-out hover:border-border/40",
             isInline ? "left-0 -translate-y-1/2" : "left-1/2 -translate-x-1/2 -translate-y-1/2",
             triggerSize,
             triggerOffset,
             isExpanded
               ? "scale-0 opacity-0"
               : cn(
-                  "scale-100 opacity-100 border-border/40 ring-2 ring-ring/70 ring-offset-2 ring-offset-background",
+                  "scale-100 opacity-100 ring-1 ring-foreground/10 ring-offset-1 ring-offset-background",
                   triggerOffset
                 )
           )}
