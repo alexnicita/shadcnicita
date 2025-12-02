@@ -52,7 +52,19 @@ function App() {
     >
       {/* Fixed header - never moves */}
       <div className="fixed top-8 left-8 md:left-16 z-50">
-        <h1 className="text-2xl font-bold">alexander nicita</h1>
+        <h1
+          className={`text-2xl font-bold transition-colors ${showContent ? "cursor-pointer hover:text-muted-foreground" : ""}`}
+          onClick={
+            showContent
+              ? () => {
+                  setShowContent(false);
+                  setIsMenuOpen(false);
+                }
+              : undefined
+          }
+        >
+          alexander nicita
+        </h1>
       </div>
 
       {/* Fixed menu toggle - only shows after cube click */}
