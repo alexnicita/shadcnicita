@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import ThemeIndicator from "./ThemeIndicator";
 import LoadingAnimation from "./LoadingAnimation";
@@ -23,13 +23,21 @@ export default function BaseLayout({
   // Ensure theme is applied across all pages
   useTheme();
 
+  const [contentReady, setContentReady] = useState(!showLoading);
+
+  useEffect(() => {
+    if (!showLoading && !contentReady) {
+      setContentReady(true);
+    }
+  }, [showLoading, contentReady]);
+
   return (
     <>
       {showLoading && <LoadingAnimation text={loadingText} />}
       <div
         className={`min-h-screen bg-background text-foreground transition-colors duration-200 relative flex flex-col ${
-          showLoading ? "opacity-0" : "opacity-100"
-        } transition-opacity duration-1000 ${className}`}
+          contentReady ? "animate-fade-in-content" : "opacity-0"
+        } ${className}`}
       >
         <div className="flex-1">
           {children}

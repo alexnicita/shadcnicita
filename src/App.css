@@ -210,6 +210,15 @@ a {
   }
 }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @layer utilities {
   .animate-spin-slow {
     animation: spin 3s linear infinite;
@@ -225,6 +234,15 @@ a {
 
   .animate-fade-in-delayed {
     animation: fadeIn 1s ease-out 0.5s forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+  }
+
+  .animate-fade-in-content {
+    animation: fadeIn 0.6s ease-out forwards;
     opacity: 0;
   }
 }
