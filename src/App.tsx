@@ -8,18 +8,33 @@ import SpinningCube from "./components/SpinningCube";
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showCube, setShowCube] = useState(false);
+  const [showHeader, setShowHeader] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const loadingTimer = setTimeout(() => {
       setIsLoading(false);
+      // Show cube first
+      setShowCube(true);
     }, 2000);
-    return () => clearTimeout(timer);
+    return () => clearTimeout(loadingTimer);
   }, []);
+
+  // After cube fades in, show the header text
+  useEffect(() => {
+    if (showCube && !showContent) {
+      const headerTimer = setTimeout(() => {
+        setShowHeader(true);
+      }, 1600); // Delay after cube appears
+      return () => clearTimeout(headerTimer);
+    }
+  }, [showCube, showContent]);
 
   return (
     <BaseLayout
       showLoading={isLoading}
+      showUIElements={showHeader}
       className="p-8 md:px-16 md:pb-16 md:pt-8"
       afterThemeIndicator={
         <div className="text-xs text-muted-foreground">
@@ -51,21 +66,23 @@ function App() {
       }
     >
       {/* Fixed header - never moves */}
-      <div className="fixed top-8 left-8 md:left-16 z-50">
-        <h1
-          className={`text-2xl font-bold transition-colors ${showContent ? "cursor-pointer hover:text-muted-foreground" : ""}`}
-          onClick={
-            showContent
-              ? () => {
-                  setShowContent(false);
-                  setIsMenuOpen(false);
-                }
-              : undefined
-          }
-        >
-          alexander nicita
-        </h1>
-      </div>
+      {showHeader && (
+        <div className="fixed top-8 left-8 md:left-16 z-50 animate-fade-in">
+          <h1
+            className={`text-2xl font-bold transition-colors ${showContent ? "cursor-pointer hover:text-muted-foreground" : ""}`}
+            onClick={
+              showContent
+                ? () => {
+                    setShowContent(false);
+                    setIsMenuOpen(false);
+                  }
+                : undefined
+            }
+          >
+            alexander nicita
+          </h1>
+        </div>
+      )}
 
       {/* Fixed menu toggle - only shows after cube click */}
       {showContent && (
@@ -81,8 +98,8 @@ function App() {
       )}
 
       {/* Cube - fixed center, doesn't affect layout */}
-      {!showContent && (
-        <div className="fixed inset-0 flex items-center justify-center z-10 pointer-events-none">
+      {showCube && !showContent && (
+        <div className="fixed inset-0 flex items-center justify-center z-10 pointer-events-none animate-fade-in">
           <div className="pointer-events-auto">
             <SpinningCube onClick={() => setShowContent(true)} />
           </div>
@@ -201,34 +218,36 @@ function App() {
       )}
 
       {/* Phone number - Desktop version (bottom left corner) */}
-      <div className="hidden md:flex fixed z-40 bottom-8 left-8 items-end gap-2 text-sm text-muted-foreground">
-        <div className="flex items-center gap-1.5">
-          <span>AI</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      {showHeader && (
+        <div className="hidden md:flex fixed z-40 bottom-8 left-8 items-end gap-2 text-sm text-muted-foreground animate-fade-in">
+          <div className="flex items-center gap-1.5">
+            <span>AI</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+          </div>
+          <Button
+            asChild
+            variant="outline"
+            className="font-medium leading-none translate-y-[10px]"
           >
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-          </svg>
+            <a href="tel:+13322236026">+1 (332) 223-6026</a>
+          </Button>
         </div>
-        <Button
-          asChild
-          variant="outline"
-          className="font-medium leading-none translate-y-[10px]"
-        >
-          <a href="tel:+13322236026">+1 (332) 223-6026</a>
-        </Button>
-      </div>
+      )}
 
       {/* Color palette selector - Desktop only (bottom center) */}
-      <ColorPaletteLauncher />
+      {showHeader && <ColorPaletteLauncher />}
     </BaseLayout>
   );
 }

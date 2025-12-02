@@ -7,6 +7,7 @@ interface BaseLayoutProps {
   children: ReactNode;
   showLoading?: boolean;
   showThemeIndicator?: boolean;
+  showUIElements?: boolean;
   className?: string;
   loadingText?: string;
   afterThemeIndicator?: ReactNode;
@@ -16,6 +17,7 @@ export default function BaseLayout({
   children,
   showLoading = false,
   showThemeIndicator = true,
+  showUIElements = true,
   className = "",
   loadingText = "an",
   afterThemeIndicator,
@@ -43,16 +45,16 @@ export default function BaseLayout({
           {children}
         </div>
 
-        {showThemeIndicator ? (
+        {showThemeIndicator && showUIElements && (
           <>
-            <div className="md:hidden mt-16 pb-8 flex flex-col items-start gap-2 relative z-20">
+            <div className="md:hidden mt-16 pb-8 flex flex-col items-start gap-2 relative z-20 animate-fade-in">
               <ThemeIndicator variant="mobile" showInContent />
               {afterThemeIndicator}
             </div>
-            <ThemeIndicator variant="desktop" />
+            <div className="animate-fade-in">
+              <ThemeIndicator variant="desktop" />
+            </div>
           </>
-        ) : (
-          afterThemeIndicator
         )}
       </div>
     </>
