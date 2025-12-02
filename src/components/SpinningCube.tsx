@@ -15,12 +15,12 @@ export default function SpinningCube({
   useAnimationFrame((t: number) => {
     if (!cubeRef.current) return;
 
-    const rotate = Math.sin(t / 10000) * 200;
-    const y = (1 + Math.sin(t / 1000)) * -50;
+    const rotate = Math.sin(t / 10000) * 100;
+    const y = (1 + Math.sin(t / 1000)) * -10;
     cubeRef.current.style.transform = `translateY(${y}px) rotateX(${rotate}deg) rotateY(${rotate}deg)`;
   });
 
-  const halfSize = size / 2;
+  const quarterSize = size / 4;
 
   return (
     <div
@@ -42,42 +42,42 @@ export default function SpinningCube({
         <div
           className="cube-side"
           style={{
-            transform: `translateZ(${halfSize}px)`,
+            transform: `translateZ(${quarterSize}px)`,
           }}
         />
         {/* Back */}
         <div
           className="cube-side"
           style={{
-            transform: `rotateY(180deg) translateZ(${halfSize}px)`,
+            transform: `rotateY(180deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Left */}
         <div
           className="cube-side"
           style={{
-            transform: `rotateY(-90deg) translateZ(${halfSize}px)`,
+            transform: `rotateY(-90deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Right */}
         <div
           className="cube-side"
           style={{
-            transform: `rotateY(90deg) translateZ(${halfSize}px)`,
+            transform: `rotateY(90deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Top */}
         <div
           className="cube-side"
           style={{
-            transform: `rotateX(90deg) translateZ(${halfSize}px)`,
+            transform: `rotateX(90deg) translateZ(${quarterSize}px)`,
           }}
         />
         {/* Bottom */}
         <div
           className="cube-side"
           style={{
-            transform: `rotateX(-90deg) translateZ(${halfSize}px)`,
+            transform: `rotateX(-90deg) translateZ(${quarterSize}px)`,
           }}
         />
       </div>
