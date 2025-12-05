@@ -47,7 +47,7 @@ export default function BaseLayout({
 
         {showThemeIndicator && showUIElements && (
           <>
-            <div className="md:hidden mt-16 pb-8 flex flex-col items-start gap-2 relative z-20 animate-fade-in">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 pb-6 flex flex-col items-center gap-2 animate-fade-in">
               <ThemeIndicator variant="mobile" showInContent />
               {afterThemeIndicator}
             </div>
