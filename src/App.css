@@ -308,7 +308,8 @@ a {
   -webkit-font-smoothing: antialiased;
 }
 
-.cube:hover .cube-side {
+.cube:hover .cube-side,
+.cube-dragging .cube-side {
   border-color: hsl(var(--primary));
   background: hsl(var(--primary) / 0.08);
   transition-delay: 0s;
