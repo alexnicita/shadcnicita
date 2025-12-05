@@ -61,7 +61,7 @@ export default function ColorPaletteLauncher({
   const triggerOffset = "-translate-y-[10px]";
   const rootClass =
     variant === "inline"
-      ? "hidden md:flex justify-start"
+      ? "flex justify-start"
       : "hidden md:flex fixed bottom-4 left-1/2 z-40 -translate-x-1/2 sm:bottom-6";
   const containerClass =
     variant === "inline"
