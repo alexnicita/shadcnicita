@@ -4,7 +4,6 @@ import BaseLayout from "./shared/BaseLayout";
 import { blogPosts } from "../data/blogPosts";
 
 export default function BlogIndex() {
-  const [isLoading, setIsLoading] = useState(true);
   const [excerptsBySlug, setExcerptsBySlug] = useState<Record<string, string>>({});
 
   // Extract the content area after frontmatter and return the first sentence
@@ -59,19 +58,8 @@ export default function BlogIndex() {
     };
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <BaseLayout
-      showLoading={isLoading}
-      loadingText="✍️🧐"
-      className="p-8 md:p-16"
-    >
+    <BaseLayout className="p-8 md:p-16">
       <header className="flex justify-between items-center mb-16">
         <a
           href="/"

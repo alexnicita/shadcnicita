@@ -56,15 +56,7 @@ function parseMarkdown(text: string): PostData {
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const [post, setPost] = useState<PostData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (!slug) return;
@@ -126,11 +118,7 @@ export default function BlogPost() {
 
   if (error || !post) {
     return (
-      <BaseLayout
-        showLoading={isLoading}
-        loadingText="✍️🧐"
-        className="p-8 md:p-16"
-      >
+      <BaseLayout className="p-8 md:p-16">
         <header className="flex justify-between items-center mb-16">
           <Link
             to="/blog"
@@ -151,11 +139,7 @@ export default function BlogPost() {
   }
 
   return (
-    <BaseLayout
-      showLoading={isLoading}
-      loadingText="✍️🧐"
-      className="p-8 md:p-16"
-    >
+    <BaseLayout className="p-8 md:p-16">
       <header className="flex justify-between items-center mb-16">
         <Link
           to="/blog"
