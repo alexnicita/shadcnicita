@@ -51,12 +51,12 @@ export default function CornerInfo({
   return (
     <div
       className={cn(
-        "hidden md:block fixed bottom-6 left-16 z-40 max-w-sm animate-fade-in",
+        "hidden md:flex fixed bottom-8 left-16 z-40 max-w-sm animate-fade-in items-end",
         className
       )}
     >
       {/* Navigation Links */}
-      <nav className="flex items-center gap-2 text-sm font-medium text-foreground/80">
+      <nav className="flex items-center gap-2 text-sm font-medium text-foreground/80 pb-[3px]">
         <a
           href="/blog"
           className="hover:text-foreground transition-colors duration-200"
