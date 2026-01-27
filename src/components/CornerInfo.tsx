@@ -9,6 +9,9 @@ export default function CornerInfo({
   className,
   variant = "desktop",
 }: CornerInfoProps) {
+  const linkClasses =
+    "relative inline-flex transition-colors duration-200 hover:text-foreground after:content-[''] after:absolute after:left-[0.08em] after:right-[0.08em] after:-bottom-[0.1em] after:h-px after:bg-foreground/40 after:transition-colors after:duration-200 hover:after:bg-foreground";
+
   if (variant === "mobile") {
     return (
       <div
@@ -19,7 +22,7 @@ export default function CornerInfo({
           <a
             href="/blog"
             target="_blank"
-            className="hover:text-foreground transition-colors duration-200"
+            className={linkClasses}
           >
             Writing
           </a>
@@ -28,7 +31,7 @@ export default function CornerInfo({
             href="https://seaportand.co"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors duration-200"
+            className={linkClasses}
           >
             Building
           </a>
@@ -37,7 +40,7 @@ export default function CornerInfo({
             href="mailto:alex@nicita.cc"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors duration-200"
+            className={linkClasses}
           >
             Investing
           </a>
@@ -59,7 +62,7 @@ export default function CornerInfo({
       <nav className="flex items-center gap-2 text-sm font-medium text-foreground/80 pb-[3px]">
         <a
           href="/blog"
-          className="hover:text-foreground transition-colors duration-200"
+          className={linkClasses}
         >
           Writing
         </a>
@@ -68,7 +71,7 @@ export default function CornerInfo({
           href="https://seaportand.co"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-foreground transition-colors duration-200"
+          className={linkClasses}
         >
           Building
         </a>
@@ -77,7 +80,7 @@ export default function CornerInfo({
           href="mailto:alex@nicita.cc"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-foreground transition-colors duration-200"
+          className={linkClasses}
         >
           Investing
         </a>
