@@ -54,7 +54,7 @@ export default function CornerInfo({
   return (
     <div
       className={cn(
-        "hidden md:flex fixed bottom-8 left-16 z-40 max-w-sm animate-fade-in items-end",
+        "hidden md:flex fixed bottom-8 left-8 z-40 max-w-sm animate-fade-in items-end",
         className
       )}
     >

@@ -140,7 +140,7 @@ export default function BlogPost() {
 
   return (
     <BaseLayout className="p-8 md:p-16">
-      <header className="flex justify-between items-center mb-16">
+      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50 animate-fade-in">
         <Link
           to="/blog"
           className="text-2xl font-bold hover:text-muted-foreground transition-colors"
@@ -149,7 +149,7 @@ export default function BlogPost() {
         </Link>
       </header>
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto pt-12 md:pt-16">
         <article>
           <header className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">

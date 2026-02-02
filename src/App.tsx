@@ -12,7 +12,7 @@ function App() {
       showThemeIndicator={false}
     >
       {/* Fixed header */}
-      <div className="fixed top-8 left-8 md:left-16 z-50 animate-fade-in">
+      <div className="fixed top-4 left-4 md:top-8 md:left-8 z-50 animate-fade-in">
         <h1 className="text-2xl font-bold">alexander nicita</h1>
       </div>
 

@@ -60,7 +60,7 @@ export default function BlogIndex() {
 
   return (
     <BaseLayout className="p-8 md:p-16">
-      <header className="flex justify-between items-center mb-16">
+      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50 animate-fade-in">
         <a
           href="/"
           className="text-2xl font-bold hover:text-muted-foreground transition-colors"
@@ -69,7 +69,7 @@ export default function BlogIndex() {
         </a>
       </header>
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto pt-12 md:pt-16">
         <div className="space-y-8">
           {blogPosts.map((post) => (
             <article key={post.slug} className="border-b border-border pb-8">
