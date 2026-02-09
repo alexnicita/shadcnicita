@@ -28,6 +28,13 @@ export const publishedPosts: PublishedPost[] = [
     status: "published",
     date: "2025-08-21",
   },
+  {
+    slug: "knowledge-work-after-superintelligent-ai",
+    title: "Knowledge Work After Superintelligent AI",
+    description: "Every major technological wave creates new labor categories.",
+    status: "published",
+    date: "2026-02-09",
+  },
 ];
 
 // Draft posts for development (not visible in production)

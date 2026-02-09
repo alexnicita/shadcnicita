@@ -5,6 +5,12 @@ import { blogPosts } from "../data/blogPosts";
 
 export default function BlogIndex() {
   const [excerptsBySlug, setExcerptsBySlug] = useState<Record<string, string>>({});
+  const sortedPosts = [...blogPosts].sort((a, b) => {
+    if (a.status === "draft" && b.status === "draft") return 0;
+    if (a.status === "draft") return 1;
+    if (b.status === "draft") return -1;
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
 
   // Extract the content area after frontmatter and return the first sentence
   function extractFirstSentence(markdownRaw: string): string {
@@ -33,7 +39,7 @@ export default function BlogIndex() {
     const load = async () => {
       const results: Record<string, string> = {};
       await Promise.all(
-        blogPosts.map(async (post) => {
+        sortedPosts.map(async (post) => {
           try {
             const folder = post.status === "published" ? "published" : "drafts";
             // SECURITY: Only load drafts in development
@@ -71,7 +77,7 @@ export default function BlogIndex() {
 
       <div className="max-w-2xl mx-auto pt-12 md:pt-16">
         <div className="space-y-8">
-          {blogPosts.map((post) => (
+          {sortedPosts.map((post) => (
             <article key={post.slug} className="border-b border-border pb-8">
               <Link to={`/blog/${post.slug}`} className="group block">
                 <h2 className="text-2xl font-bold mb-2 group-hover:text-muted-foreground transition-colors">
