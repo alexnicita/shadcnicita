@@ -1,4 +1,5 @@
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";
 import BaseLayout from "./components/shared/BaseLayout";
 import ColorPaletteLauncher from "./components/ColorPaletteLauncher";
 import CornerInfo from "./components/CornerInfo";
@@ -7,6 +8,7 @@ import ThemeIndicator from "./components/shared/ThemeIndicator";
 
 function App() {
   return (
+    <>
     <BaseLayout
       className="p-8 md:px-16 md:pb-16 md:pt-8"
       showThemeIndicator={false}
@@ -43,6 +45,8 @@ function App() {
         <ThemeIndicator variant="mobile" showInContent />
       </div>
     </BaseLayout>
+    <Analytics />
+    </>
   );
 }
 
