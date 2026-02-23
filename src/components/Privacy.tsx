@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BaseLayout from "./shared/BaseLayout";
 import MarkdownRenderer from "./shared/MarkdownRenderer";
+import { useSeo } from "../lib/seo";
 
 const privacyPolicyContent = `## Privacy Policy
 
@@ -57,6 +58,12 @@ We may update this Privacy Policy from time to time. We will notify you of any c
 
 export default function Privacy() {
   const [isLoading, setIsLoading] = useState(true);
+
+  useSeo({
+    title: "Privacy Policy",
+    description: "Privacy policy for nicita.cc.",
+    path: "/privacy",
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {

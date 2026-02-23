@@ -7,12 +7,25 @@ import CornerInfo from "./components/CornerInfo";
 import SpinningCube from "./components/SpinningCube";
 import PrimaryLinks from "./components/shared/PrimaryLinks";
 import ThemeIndicator from "./components/shared/ThemeIndicator";
+import { useSeo } from "./lib/seo";
 
 const DISPLAY_NAME = "alexander nicita";
 let hasAnimatedHomeOnce = false;
 
 function App() {
   const shouldAnimateEntrance = !hasAnimatedHomeOnce;
+
+  useSeo({
+    title: "Alexander Nicita",
+    description: "Welcome. Essays, notes, and projects by Alexander Nicita.",
+    path: "/",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: "Alexander Nicita",
+      url: `${window.location.origin}/`,
+    },
+  });
 
   useEffect(() => {
     hasAnimatedHomeOnce = true;

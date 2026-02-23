@@ -3,6 +3,7 @@ import { useState, useEffect, useLayoutEffect } from "react";
 import BaseLayout from "./shared/BaseLayout";
 import { blogPosts } from "../data/blogPosts";
 import { useTheme as useUiTheme } from "@/components/theme-provider";
+import { useSeo } from "../lib/seo";
 
 export default function BlogIndex() {
   const location = useLocation();
@@ -11,6 +12,27 @@ export default function BlogIndex() {
     {},
   );
   const navigationState = location.state as { isDarkMode?: boolean } | null;
+
+  useSeo({
+    title: "Blog",
+    description: "Essays and notes by Alexander Nicita.",
+    path: "/blog",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Alexander Nicita Blog",
+      url: `${window.location.origin}/blog`,
+      hasPart: blogPosts
+        .filter((post) => post.status === "published")
+        .map((post) => ({
+          "@type": "BlogPosting",
+          headline: post.title,
+          url: `${window.location.origin}/blog/${post.slug}`,
+          datePublished: `${post.date}T00:00:00.000Z`,
+          description: post.description,
+        })),
+    },
+  });
 
   useLayoutEffect(() => {
     if (typeof navigationState?.isDarkMode === "boolean") {

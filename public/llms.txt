@@ -1,0 +1,13 @@
+# nicita.cc
+
+> Primary sources for writing by Alexander Nicita.
+
+- Blog index: https://nicita.cc/blog
+- RSS feed: https://nicita.cc/rss.xml
+- Sitemap: https://nicita.cc/sitemap.xml
+- LLM full corpus: https://nicita.cc/llms-full.txt
+- Structured discovery: https://nicita.cc/discovery.json
+
+## Posts
+- Knowledge Work After Superintelligent AI (2026-02-09): https://nicita.cc/blog/knowledge-work-after-superintelligent-ai
+- Antonym of the Market (2025-08-21): https://nicita.cc/blog/antonym-of-the-market

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Alexander Nicita</title>
+    <link>https://nicita.cc/blog</link>
+    <description>Essays and notes by Alexander Nicita.</description>
+    <lastBuildDate>2026-02-23T19:30:00.889Z</lastBuildDate>
+    <item>
+      <title>Knowledge Work After Superintelligent AI</title>
+      <link>https://nicita.cc/blog/knowledge-work-after-superintelligent-ai</link>
+      <guid>https://nicita.cc/blog/knowledge-work-after-superintelligent-ai</guid>
+      <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
+      <description>Every major technological wave creates new labor categories.</description>
+    </item>
+    <item>
+      <title>Antonym of the Market</title>
+      <link>https://nicita.cc/blog/antonym-of-the-market</link>
+      <guid>https://nicita.cc/blog/antonym-of-the-market</guid>
+      <pubDate>Thu, 21 Aug 2025 00:00:00 GMT</pubDate>
+      <description>Nobody has a one word answer.</description>
+    </item>
+  </channel>
+</rss>

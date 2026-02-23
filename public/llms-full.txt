@@ -1,0 +1,29 @@
+# nicita.cc - Full Corpus
+
+> Canonical machine-readable corpus of published posts by Alexander Nicita.
+> Updated: 2026-02-23T19:30:00.889Z
+
+## Site
+- Home: https://nicita.cc/
+- Blog: https://nicita.cc/blog
+- RSS: https://nicita.cc/rss.xml
+- Sitemap: https://nicita.cc/sitemap.xml
+- Index: https://nicita.cc/llms.txt
+
+## Documents
+### 1. Knowledge Work After Superintelligent AI
+URL: https://nicita.cc/blog/knowledge-work-after-superintelligent-ai
+Slug: knowledge-work-after-superintelligent-ai
+Date: 2026-02-09
+Description: Every major technological wave creates new labor categories.
+
+Every major technological wave creates new labor categories. Mobile created Swift and Kotlin engineers, social media managers, and much more. Cloud created DevOps. Cars, truck drivers. Steam engines, railroad workers. The pattern has repeated for centuries, although not yet for AI. What we refer to as "Applied AI" is no more creative than "Applied Mobile" or "Applied Cloud," both nonexistent historically. Prompt engineers, conversational designers, or even data labelers are admittedly actually new concepts, but they are far too narrow in their scope to articulate true economic durability on par with doctor, lawyer, or accountant. There must be a middle ground. <strong><em>What is fundamental to AI that will shape the new, durable categories of work that it creates?</em></strong> AI is artificial. Human receptionists can answer only one call at a time and must sleep. Voice AI receptionists, equipped with tools for scheduling and payments, have no such limitations. This repeats across all rote cognitive roles. AI removes natural human bottlenecks from reasoning. AI is not philosophically physical. While there are physical requirements to build frontier models, increasing demand for datacenter construction, energy production, and adjacent infrastructure, and while there are interfaces for AI to control physical systems, reasoning cannot be material. AI is not yet superintelligent. Automating neurosurgery is still meaningfully more complex than a medical receptionist. The same is true in most specialized fields requiring continued education. <strong><em>What are the early signs of the labor market structurally adapting to fit superintelligence?</em></strong> Some labor categories have begun to emerge in service of creating superintelligence, notably the new marketplaces matching specialized workers with foundation model companies to tutor, evaluate, and transfer our most siloed knowledge, benchmarking AI's proximity to human parity. Other new types of emerging, post-ASI work operationalize superintelligence. These are direct reflections of prior corporate jobs, such as search engine optimization giving way to generative answer engine optimization. Familiar roles reappear in altered forms, hedging against a future takeoff to superintelligence happening faster than anticipated. We are certainly on the tarmac. Takeoff. Inevitable commoditized intelligence, soon able to instantly reason for unlimited human years, introduces legitimate questioning on the returns of most, if not all, traditional human cognition. The lasting categories of knowledge work in our post-ASI society will be defined by the select companies that ultimately figure out how to masterfully place people into AI's loops, efficiently orchestrating intelligence and allocating reasoning. The real future is not actually here yet. How should it be distributed?
+
+### 2. Antonym of the Market
+URL: https://nicita.cc/blog/antonym-of-the-market
+Slug: antonym-of-the-market
+Date: 2025-08-21
+Description: Nobody has a one word answer.
+
+Nobody has a one word answer. Volunteers, friends, family––these seem to be good choices. Yet each depends on the market to function. What is a mortgage if not a happy family borrowing money to buy a home? Even the simple idea of owning land makes every step anyone takes the product of a market, abstractly. Perhaps our modern society has become too intrinsically economic for a true antonym to exist. Charity is one enticing opposite. Caritas embodies benevolence, antithetical to the ruthless shouts of traders on an exchange floor. But even charity is bound to redistribution. The path toward becoming a philanthropist often starts with setting unprecedented records of financial success, charging the most for an hour of time, winning the Market itself. Individual or isolation are more compelling answers. The Market implies duality––supply and demand. One cannot exist without the other. Even when governments bend these curves, the Market persists. Only one edge case breaks this logic: allocation solely by authority, not choice. A Market is an institution that aggregates voluntary choices, never exchanges of pure command. It cannot be built on fiat. The true antonym of the Market: coercion. Forcing a transaction removes the very possibility of choice. Imagine if buying, selling, or holding was never your decision. To choose in the purest sense of the word is to authentically express free will. This action is the Market primitive. Without choice, the Market cannot exist. Like mathematicians proving by contradiction, we can capture the essence of great markets through negation. The best markets minimize coercion and expand truly authentic choices. Stakeholders have constant competition, unlimited information, and low switching costs. Bad markets do the opposite. They isolate the individual. They pressure, they corner. A key paradox for startups remains: the most successful new ventures tend to monopolize, epitomizing no choice at all; surely these cannot be bad markets. This phenomenon exists because monopoly can also be a consensus. Everyone choosing the same option differs profoundly from everyone having only one option, though the surface looks the same. Faced with monopoly: Would you prefer two bad options, or one good one? Choose wisely.
+

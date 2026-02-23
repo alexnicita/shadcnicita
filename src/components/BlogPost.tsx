@@ -4,6 +4,7 @@ import BaseLayout from "./shared/BaseLayout";
 import MarkdownRenderer from "./shared/MarkdownRenderer";
 import BlogPostNavigation from "./BlogPostNavigation";
 import { blogPosts } from "../data/blogPosts";
+import { useSeo } from "../lib/seo";
 
 interface PostData {
   title: string;
@@ -58,6 +59,38 @@ export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const [post, setPost] = useState<PostData | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useSeo({
+    title: post?.title || "Blog Post",
+    description: post?.description || "Read the latest post.",
+    path: slug ? `/blog/${slug}` : "/blog",
+    type: "article",
+    publishedTime: post?.date ? `${post.date}T00:00:00.000Z` : undefined,
+    modifiedTime: post?.date ? `${post.date}T00:00:00.000Z` : undefined,
+    jsonLd:
+      slug && post
+        ? {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.description,
+            datePublished: `${post.date}T00:00:00.000Z`,
+            dateModified: `${post.date}T00:00:00.000Z`,
+            author: {
+              "@type": "Person",
+              name: "Alexander Nicita",
+            },
+            publisher: {
+              "@type": "Person",
+              name: "Alexander Nicita",
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `${window.location.origin}/blog/${slug}`,
+            },
+          }
+        : undefined,
+  });
 
   useEffect(() => {
     if (!slug) return;

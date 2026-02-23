@@ -43,6 +43,15 @@ function firstSentence(text: string): string {
   return sentences[0] || "";
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export default function handler(req: VercelRequest, res: VercelResponse) {
   const slug = (req.query.slug as string) || "";
   if (!slug) {
@@ -65,7 +74,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { title, description, content } = parseFrontmatter(markdown);
+  const { title, description, content, date } = parseFrontmatter(markdown);
   const host = (req.headers["x-forwarded-host"] || req.headers.host || "nicita.cc") as string;
   const proto = (req.headers["x-forwarded-proto"] as string) || "https";
   const origin = `${proto}://${host}`;
@@ -74,6 +83,17 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   const image = `${origin}/og-image.svg`;
   const safeTitle = (title && title.trim()) || "Blog Post";
   const safeDesc = (desc && desc.trim()) || "Read the latest article.";
+  const safeDate = date && date.trim() ? `${date}T00:00:00.000Z` : undefined;
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: safeTitle,
+    description: safeDesc,
+    ...(safeDate ? { datePublished: safeDate, dateModified: safeDate } : {}),
+    author: { "@type": "Person", name: "Alexander Nicita" },
+    publisher: { "@type": "Person", name: "Alexander Nicita" },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
 
   const html = `<!doctype html>
 <html lang="en">
@@ -81,28 +101,32 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${safeTitle}</title>
-    <meta name="description" content="${safeDesc}" />
+    <meta name="description" content="${escapeHtml(safeDesc)}" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="${url}" />
 
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="${safeTitle}" />
-    <meta property="og:description" content="${safeDesc}" />
+    <meta property="og:title" content="${escapeHtml(safeTitle)}" />
+    <meta property="og:description" content="${escapeHtml(safeDesc)}" />
     <meta property="og:url" content="${url}" />
     <meta property="og:image" content="${image}" />
+    ${safeDate ? `<meta property="article:published_time" content="${safeDate}" />` : ""}
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${safeTitle}" />
-    <meta name="twitter:description" content="${safeDesc}" />
+    <meta name="twitter:title" content="${escapeHtml(safeTitle)}" />
+    <meta name="twitter:description" content="${escapeHtml(safeDesc)}" />
     <meta name="twitter:image" content="${image}" />
-
-    <meta http-equiv="refresh" content="0; url=${url}" />
+    <script type="application/ld+json">${JSON.stringify(articleJsonLd)}</script>
   </head>
   <body>
-    <p>Redirecting to <a href="${url}">${url}</a>…</p>
-    <script>location.replace(${JSON.stringify(url)});</script>
+    <article>
+      <h1>${escapeHtml(safeTitle)}</h1>
+      <p>${escapeHtml(safeDesc)}</p>
+      <p><a href="${url}">Read article</a></p>
+    </article>
   </body>
  </html>`;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.status(200).send(html);
 }
-
