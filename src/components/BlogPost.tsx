@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import BaseLayout from "./shared/BaseLayout";
 import MarkdownRenderer from "./shared/MarkdownRenderer";
+import BlogPostNavigation from "./BlogPostNavigation";
 import { blogPosts } from "../data/blogPosts";
 
 interface PostData {
@@ -57,6 +58,15 @@ export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const [post, setPost] = useState<PostData | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!slug) return;
+    window.scrollTo(0, 0);
+    const container = document.querySelector(".site-contained-scroll");
+    if (container instanceof HTMLElement) {
+      container.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [slug]);
 
   useEffect(() => {
     if (!slug) return;
@@ -118,7 +128,11 @@ export default function BlogPost() {
 
   if (error || !post) {
     return (
-      <BaseLayout className="site-contained-scroll p-8 md:p-16">
+      <BaseLayout
+        className="site-contained-scroll p-8 md:px-16 md:pt-16 md:pb-8"
+        stickyMobileFooter
+        showUIElements={false}
+      >
         <header className="flex justify-between items-center mb-16">
           <Link
             to="/blog"
@@ -139,8 +153,12 @@ export default function BlogPost() {
   }
 
   return (
-    <BaseLayout className="site-contained-scroll p-8 md:p-16">
-      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50 animate-fade-in">
+    <BaseLayout
+      className="site-contained-scroll p-8 md:px-16 md:pt-16 md:pb-8"
+      stickyMobileFooter
+      showUIElements={false}
+    >
+      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50">
         <Link
           to="/blog"
           className="text-2xl font-bold hover:text-muted-foreground transition-colors"
@@ -167,6 +185,7 @@ export default function BlogPost() {
           </header>
 
           <MarkdownRenderer content={post.content} />
+          {slug && <BlogPostNavigation currentSlug={slug} />}
         </article>
       </div>
     </BaseLayout>

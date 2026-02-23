@@ -1,53 +1,27 @@
 import { useTheme } from "../../hooks/useTheme";
+import { Moon, Sun } from "lucide-react";
 
 interface ThemeIconProps {
   isDarkMode: boolean;
 }
 
 function ThemeIcon({ isDarkMode }: ThemeIconProps) {
-  if (isDarkMode) {
-    // Show sun icon at night
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="13"
-        height="13"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.85"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2" />
-        <path d="M12 20v2" />
-        <path d="m4.93 4.93 1.41 1.41" />
-        <path d="m17.66 17.66 1.41 1.41" />
-        <path d="M2 12h2" />
-        <path d="M20 12h2" />
-        <path d="m6.34 17.66-1.41 1.41" />
-        <path d="m19.07 4.93-1.41 1.41" />
-      </svg>
-    );
-  } else {
-    // Show moon icon during the day
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="13"
-        height="13"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.85"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-      </svg>
-    );
-  }
+  return (
+    <span className="relative inline-grid h-[13px] w-[13px] place-items-center">
+      <Sun
+        size={13}
+        strokeWidth={1.85}
+        className={`absolute inset-0 m-auto transition-opacity duration-150 ${isDarkMode ? "opacity-100" : "opacity-0"}`}
+        aria-hidden="true"
+      />
+      <Moon
+        size={13}
+        strokeWidth={1.85}
+        className={`absolute inset-0 m-auto transition-opacity duration-150 ${isDarkMode ? "opacity-0" : "opacity-100"}`}
+        aria-hidden="true"
+      />
+    </span>
+  );
 }
 
 interface ThemeButtonProps {
@@ -64,7 +38,7 @@ function ThemeButton({
   return (
     <button
       onClick={handleThemeClick}
-      className={`p-1 rounded-full border border-muted-foreground/45 text-muted-foreground hover:text-foreground hover:border-foreground/55 focus-visible:text-foreground focus-visible:border-foreground/55 transition-colors duration-200 flex items-center justify-center ${className}`}
+      className={`p-1 rounded-full border border-muted-foreground/45 text-muted-foreground hover:text-foreground hover:border-foreground/55 focus-visible:text-foreground focus-visible:border-foreground/55 transition-colors duration-200 flex items-center justify-center leading-none ${className}`}
       style={{ minWidth: 28, minHeight: 28 }}
       title="Click to toggle theme (Alt + click to toggle auto mode)"
     >
@@ -76,11 +50,13 @@ function ThemeButton({
 interface ThemeIndicatorProps {
   variant?: "mobile" | "desktop" | "both";
   showInContent?: boolean;
+  fixedDesktop?: boolean;
 }
 
 export default function ThemeIndicator({
   variant = "both",
   showInContent = false,
+  fixedDesktop = true,
 }: ThemeIndicatorProps) {
   const { isDarkMode, themeMessage, handleThemeClick } = useTheme();
 
@@ -106,17 +82,23 @@ export default function ThemeIndicator({
       )}
 
       {(variant === "desktop" || variant === "both") && !showInContent && (
-        <div className="hidden md:flex fixed z-40 bottom-8 right-8 items-end gap-2">
-          <div className="min-w-[2.5rem] text-center pb-[3px]">
+        <div
+          className={
+            fixedDesktop
+              ? "hidden md:flex fixed z-40 bottom-8 right-8 items-center gap-1.5"
+              : "hidden md:flex items-center gap-1.5"
+          }
+        >
+          <div className="min-w-[2.3rem] text-center theme-time-font">
             <span className="text-sm text-muted-foreground">NYC</span>
           </div>
-          <div className="pt-[5px]">
+          <div>
             <ThemeButton
               isDarkMode={isDarkMode}
               handleThemeClick={handleThemeClick}
             />
           </div>
-          <div className="min-w-[4rem] text-center pb-[3px]">
+          <div className="min-w-[3.8rem] text-center theme-time-font">
             <span className="text-sm text-muted-foreground whitespace-nowrap">
               {themeMessage}
             </span>

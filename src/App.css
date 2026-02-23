@@ -1,11 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: "Space Grotesk", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 }
@@ -297,58 +301,18 @@ a {
   }
 }
 
-.handwritten-title {
-  font-family: "Nothing You Could Do", "Segoe Script", "Bradley Hand", cursive;
-  font-size: 1.36em;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  display: inline-block;
-  white-space: pre;
-}
-
-.title-animation-shell {
-  position: relative;
-  display: inline-block;
-}
-
-.handwritten-title-reserve {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.handwritten-title-live {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.signature-layer {
-  display: inline-flex;
-  align-items: baseline;
-}
-
-.signature-svg {
-  display: inline-block;
-  height: 1.2em;
-  width: auto;
-  overflow: visible;
-  will-change: clip-path;
-}
-
-.signature-fill {
-  fill: currentColor;
-  stroke: currentColor;
-  stroke-width: 2.28;
-  stroke-linejoin: round;
-  paint-order: stroke fill;
-  opacity: 1;
-}
-
 /* Smooth transitions */
 .transition-colors {
   transition:
     color 0.2s ease-in-out,
     background-color 0.2s ease-in-out;
+}
+
+.theme-time-font {
+  font-family:
+    "Space Grotesk",
+    "Segoe UI",
+    sans-serif;
 }
 
 /* Custom cursor for interactive elements */

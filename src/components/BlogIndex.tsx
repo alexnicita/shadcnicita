@@ -1,10 +1,23 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useLayoutEffect } from "react";
 import BaseLayout from "./shared/BaseLayout";
 import { blogPosts } from "../data/blogPosts";
+import { useTheme as useUiTheme } from "@/components/theme-provider";
 
 export default function BlogIndex() {
-  const [excerptsBySlug, setExcerptsBySlug] = useState<Record<string, string>>({});
+  const location = useLocation();
+  const { setTheme } = useUiTheme();
+  const [excerptsBySlug, setExcerptsBySlug] = useState<Record<string, string>>(
+    {},
+  );
+  const navigationState = location.state as { isDarkMode?: boolean } | null;
+
+  useLayoutEffect(() => {
+    if (typeof navigationState?.isDarkMode === "boolean") {
+      setTheme(navigationState.isDarkMode ? "dark" : "light");
+    }
+  }, [navigationState?.isDarkMode, setTheme]);
+
   const sortedPosts = [...blogPosts].sort((a, b) => {
     if (a.status === "draft" && b.status === "draft") return 0;
     if (a.status === "draft") return 1;
@@ -47,14 +60,16 @@ export default function BlogIndex() {
               results[post.slug] = post.description;
               return;
             }
-            const mod = await import(`../blog/${folder}/${post.slug}/index.md?raw`);
+            const mod = await import(
+              `../blog/${folder}/${post.slug}/index.md?raw`
+            );
             const raw = mod.default as string;
             const excerpt = extractFirstSentence(raw);
             results[post.slug] = excerpt || post.description;
           } catch (_err) {
             results[post.slug] = post.description;
           }
-        })
+        }),
       );
       if (!isCancelled) setExcerptsBySlug(results);
     };
@@ -66,13 +81,13 @@ export default function BlogIndex() {
 
   return (
     <BaseLayout className="site-contained-scroll p-8 md:p-16">
-      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50 animate-fade-in">
-        <a
-          href="/"
+      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50">
+        <Link
+          to="/"
           className="text-2xl font-bold hover:text-muted-foreground transition-colors"
         >
           ←
-        </a>
+        </Link>
       </header>
 
       <div className="max-w-2xl mx-auto pt-12 md:pt-16">
@@ -92,7 +107,7 @@ export default function BlogIndex() {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
-                        }
+                        },
                       )}
                 </p>
                 <p className="text-muted-foreground">

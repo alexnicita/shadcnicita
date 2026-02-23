@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import { useTheme } from "@/hooks/useTheme";
 
 interface PrimaryLinksProps {
   className?: string;
@@ -9,8 +11,9 @@ export default function PrimaryLinks({
   className,
   align = "left",
 }: PrimaryLinksProps) {
+  const { isDarkMode } = useTheme();
   const linkClasses =
-    "relative inline-flex transition-colors duration-200 hover:text-foreground after:content-[''] after:absolute after:left-[0.08em] after:right-[0.08em] after:-bottom-[0.1em] after:h-px after:bg-foreground/40 after:transition-colors after:duration-200 hover:after:bg-foreground";
+    "relative inline-flex text-foreground/70 transition-colors duration-200 hover:text-foreground after:content-[''] after:absolute after:left-[0.08em] after:right-[0.08em] after:-bottom-[0.1em] after:h-px after:bg-foreground/25 after:transition-colors after:duration-200 hover:after:bg-foreground";
 
   return (
     <nav
@@ -21,12 +24,13 @@ export default function PrimaryLinks({
         className
       )}
     >
-      <a
-        href="/blog"
+      <Link
+        to="/blog"
+        state={{ isDarkMode }}
         className={linkClasses}
       >
         Writing
-      </a>
+      </Link>
       <span className="text-foreground/30">·</span>
       <a
         href="https://seaportand.co"

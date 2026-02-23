@@ -45,7 +45,7 @@ export default function ColorPaletteLauncher({
   const spacing = variant === "inline" ? 32 : 44;
   const isInline = variant === "inline";
   const offsets = useMemo(
-    () => computeOffsets(paletteChoices.length, spacing, isInline),
+    () => computeOffsets(paletteChoices.length, spacing),
     [paletteChoices.length, spacing, isInline]
   );
   const { theme: baseTheme } = useUiTheme();
@@ -61,11 +61,11 @@ export default function ColorPaletteLauncher({
   const triggerOffset = "-translate-y-[10px]";
   const rootClass =
     variant === "inline"
-      ? "flex justify-start"
+      ? "flex w-full justify-center"
       : "hidden md:flex fixed bottom-4 left-1/2 z-40 -translate-x-1/2 sm:bottom-6";
   const containerClass =
     variant === "inline"
-      ? "relative h-10 translate-y-0.5"
+      ? "relative h-10 w-24 translate-y-0.5"
       : "relative h-12 w-24";
 
   useEffect(() => {
@@ -113,17 +113,13 @@ export default function ColorPaletteLauncher({
               style={{
                 backgroundColor: previewColor,
                 transform: isExpanded
-                  ? isInline
-                    ? `translate(${offsetX}px, -50%) scale(1)`
-                    : `translate(calc(-50% + ${offsetX}px), -50%) scale(1)`
-                  : isInline
-                    ? "translate(0, -50%) scale(0.3)"
-                    : "translate(-50%, -50%) scale(0.3)",
+                  ? `translate(calc(-50% + ${offsetX}px), -50%) scale(1)`
+                  : "translate(-50%, -50%) scale(0.3)",
                 transitionDelay: `${index * 45}ms`,
               }}
               className={cn(
                 "absolute top-1/2 h-5 w-5 rounded-full border border-border/20 shadow-sm outline-none transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] hover:border-border/40 focus-visible:ring-1 focus-visible:ring-ring/50",
-                isInline ? "left-0" : "left-1/2",
+                "left-1/2",
                 isExpanded ? "opacity-100" : "opacity-0",
                 isActive && "ring-1 ring-foreground/20 ring-offset-1 ring-offset-background"
               )}
@@ -143,7 +139,7 @@ export default function ColorPaletteLauncher({
           style={{ backgroundColor: currentSwatchColor }}
           className={cn(
             "absolute top-1/2 flex items-center justify-center rounded-full border border-border/35 shadow-sm transition-all duration-200 ease-out hover:border-border/55",
-            isInline ? "left-0 -translate-y-1/2" : "left-1/2 -translate-x-1/2 -translate-y-1/2",
+            "left-1/2 -translate-x-1/2 -translate-y-1/2",
             triggerSize,
             triggerOffset,
             isExpanded

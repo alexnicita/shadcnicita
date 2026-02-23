@@ -5,6 +5,7 @@ import PrimaryLinks from "./shared/PrimaryLinks";
 interface CornerInfoProps {
   className?: string;
   variant?: "desktop" | "mobile" | "mobile-social";
+  fixedDesktop?: boolean;
 }
 
 function SocialLinks({ className }: { className?: string }) {
@@ -52,6 +53,7 @@ function SocialLinks({ className }: { className?: string }) {
 export default function CornerInfo({
   className,
   variant = "desktop",
+  fixedDesktop = true,
 }: CornerInfoProps) {
   if (variant === "mobile") {
     return (
@@ -75,12 +77,13 @@ export default function CornerInfo({
   return (
     <div
       className={cn(
-        "hidden md:flex fixed bottom-8 left-8 z-40 animate-fade-in items-end",
-        className
+        fixedDesktop
+          ? "hidden md:flex fixed bottom-8 left-8 z-40 items-end"
+          : "hidden md:flex items-end",
+        className,
       )}
     >
       <SocialLinks className="pb-[3px]" />
-
     </div>
   );
 }
