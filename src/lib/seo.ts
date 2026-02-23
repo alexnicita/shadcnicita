@@ -46,7 +46,8 @@ export function useSeo(config: SeoConfig): void {
     const origin = window.location.origin;
     const canonicalUrl = `${origin}${config.path}`;
     const imageUrl = `${origin}${DEFAULT_IMAGE_PATH}`;
-    const fullTitle = `${config.title} | ${SITE_NAME}`;
+    const fullTitle =
+      config.title === SITE_NAME ? SITE_NAME : `${config.title} | ${SITE_NAME}`;
 
     document.title = fullTitle;
     upsertMeta("name", "description", config.description);
