@@ -118,7 +118,7 @@ export default function BlogPost() {
 
   if (error || !post) {
     return (
-      <BaseLayout className="p-8 md:p-16">
+      <BaseLayout className="site-contained-scroll p-8 md:p-16">
         <header className="flex justify-between items-center mb-16">
           <Link
             to="/blog"
@@ -139,7 +139,7 @@ export default function BlogPost() {
   }
 
   return (
-    <BaseLayout className="p-8 md:p-16">
+    <BaseLayout className="site-contained-scroll p-8 md:p-16">
       <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50 animate-fade-in">
         <Link
           to="/blog"

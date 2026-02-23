@@ -142,14 +142,14 @@ export default function ColorPaletteLauncher({
           onDoubleClick={handleReset}
           style={{ backgroundColor: currentSwatchColor }}
           className={cn(
-            "absolute top-1/2 flex items-center justify-center rounded-full border border-border/20 shadow-sm transition-all duration-200 ease-out hover:border-border/40",
+            "absolute top-1/2 flex items-center justify-center rounded-full border border-border/35 shadow-sm transition-all duration-200 ease-out hover:border-border/55",
             isInline ? "left-0 -translate-y-1/2" : "left-1/2 -translate-x-1/2 -translate-y-1/2",
             triggerSize,
             triggerOffset,
             isExpanded
               ? "scale-0 opacity-0"
               : cn(
-                  "scale-100 opacity-100 ring-1 ring-foreground/10 ring-offset-1 ring-offset-background",
+                  "scale-100 opacity-100 ring-1 ring-foreground/15 ring-offset-1 ring-offset-background",
                   triggerOffset
                 )
           )}

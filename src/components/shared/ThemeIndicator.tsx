@@ -10,12 +10,12 @@ function ThemeIcon({ isDarkMode }: ThemeIconProps) {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
+        width="13"
+        height="13"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.85"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -35,12 +35,12 @@ function ThemeIcon({ isDarkMode }: ThemeIconProps) {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
+        width="13"
+        height="13"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.85"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -64,7 +64,7 @@ function ThemeButton({
   return (
     <button
       onClick={handleThemeClick}
-      className={`p-1 rounded-full border border-border hover:border-foreground transition-colors flex items-center justify-center ${className}`}
+      className={`p-1 rounded-full border border-muted-foreground/45 text-muted-foreground hover:text-foreground hover:border-foreground/55 focus-visible:text-foreground focus-visible:border-foreground/55 transition-colors duration-200 flex items-center justify-center ${className}`}
       style={{ minWidth: 28, minHeight: 28 }}
       title="Click to toggle theme (Alt + click to toggle auto mode)"
     >
