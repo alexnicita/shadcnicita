@@ -242,7 +242,7 @@ a {
     position: fixed;
     inset: 3px;
     border: 2px solid hsl(var(--frame-border-color));
-    box-shadow: 0 0 0 9999px hsl(var(--frame-color));
+    box-shadow: 0 0 0 9999px hsl(var(--primary));
     pointer-events: none;
     z-index: 9999;
   }
