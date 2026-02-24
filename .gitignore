@@ -29,3 +29,9 @@ dist-ssr
 # Environment files
 .env
 .env.*
+
+# Generated discovery/SEO artifacts
+public/discovery.json
+public/llms-full.txt
+public/rss.xml
+public/sitemap.xml
