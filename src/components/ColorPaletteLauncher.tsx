@@ -97,7 +97,7 @@ export default function ColorPaletteLauncher({
   };
 
   return (
-    <div className={cn(rootClass, className)}>
+    <div className={cn(rootClass, className)} data-nosnippet>
       <div ref={containerRef} className={containerClass}>
         {paletteChoices.map((id, index) => {
           const palette = THEME_PALETTES[id];
@@ -131,8 +131,8 @@ export default function ColorPaletteLauncher({
           type="button"
           aria-label={
             isExpanded
-              ? "Collapse palette menu"
-              : "Open palette menu. Double click to reset."
+              ? "Collapse mode toggle"
+              : "Mode toggle. Double click to reset."
           }
           onClick={handleToggle}
           onDoubleClick={handleReset}
@@ -150,7 +150,7 @@ export default function ColorPaletteLauncher({
                 )
           )}
         >
-          <span className="sr-only">Open color palette</span>
+          <span className="sr-only">Mode toggle</span>
         </button>
       </div>
     </div>
