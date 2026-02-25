@@ -41,7 +41,14 @@ function App() {
         {/* Fixed header */}
         <div className="fixed top-8 left-1/2 -translate-x-1/2 text-center md:text-left md:top-12 md:left-8 md:translate-x-0 z-50 w-max">
           <h1 className="text-[1.7rem] font-semibold tracking-[-0.01em]">
-            {DISPLAY_NAME}
+            <a
+              href="https://alexnicita.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-muted-foreground transition-colors cursor-pointer"
+            >
+              {DISPLAY_NAME}
+            </a>
           </h1>
           <div className="md:hidden mt-1">
             <PrimaryLinks className="w-max" align="center" />
