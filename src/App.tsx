@@ -79,7 +79,7 @@ function App() {
 
         {/* Mobile: Bottom section - stacked vertically, centered */}
         <div
-          className={`md:hidden fixed bottom-0 left-0 right-0 z-40 pb-8 flex flex-col items-center gap-2.5 ${
+          className={`md:hidden fixed bottom-0 left-0 right-0 z-40 pb-6 flex flex-col items-center gap-2.5 ${
             shouldAnimateEntrance ? "animate-fade-in" : ""
           }`}
         >
@@ -87,7 +87,7 @@ function App() {
           <ThemeIndicator variant="mobile" showInContent />
 
           {/* Social links below timezone on mobile */}
-          <CornerInfo variant="mobile-social" />
+          <CornerInfo variant="mobile-social" className="mt-1" />
 
           {/* Mobile: color palette at the bottom of the stack */}
           <ColorPaletteLauncher variant="inline" />

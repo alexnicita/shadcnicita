@@ -21,43 +21,21 @@ const initialState: ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
-/**
- * Determines if it's currently daytime based on the user's local time.
- * Uses SunCalc with an approximate latitude based on timezone offset
- * to get more accurate sunrise/sunset times.
- */
+const NYC_LOCATION = { lat: 40.7128, lng: -74.006 };
+
 function isDaytime(): boolean {
   try {
     const now = new Date();
-    
-    // Approximate latitude from timezone offset
-    // This gives a rough estimate: UTC+0 ≈ 51° (London), further offsets adjust accordingly
-    // Most populated areas are between 25° and 60° latitude
-    const timezoneOffset = now.getTimezoneOffset(); // in minutes, negative for east of UTC
-    // Rough heuristic: map timezone to latitude (not perfect but reasonable)
-    // Timezone offsets range from -720 to +840 minutes
-    // We'll use a simple approximation centering around 40° latitude
-    const estimatedLat = 40; // Use 40° as a reasonable middle-ground latitude
-    const estimatedLng = -timezoneOffset / 4; // Convert minutes to rough longitude
-    
-    const times = SunCalc.getTimes(now, estimatedLat, estimatedLng);
-    
-    // Add 30-minute buffer after sunrise, before sunset for a more natural transition
+    const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
     const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
     const sunset = new Date(times.sunset.getTime() - 30 * 60000);
-    
     return now > sunrise && now < sunset;
   } catch {
-    // Fallback: use simple time-based logic (6am-7pm = light mode)
     const hour = new Date().getHours();
     return hour >= 6 && hour < 19;
   }
 }
 
-/**
- * Gets the theme based on time of day.
- * Light mode during daytime, dark mode at night.
- */
 function getTimeBasedTheme(): Theme {
   return isDaytime() ? "light" : "dark";
 }
@@ -69,19 +47,7 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    try {
-      const stored = localStorage.getItem(storageKey) as Theme | null;
-      // If user has explicitly set a preference (light or dark), use it
-      if (stored === "light" || stored === "dark") {
-        return stored;
-      }
-      // Otherwise, determine theme based on time of day
-      return getTimeBasedTheme();
-    } catch (error) {
-      console.warn("localStorage not available:", error);
-      // Fallback to time-based theme
-      return getTimeBasedTheme();
-    }
+    return defaultTheme === "system" ? getTimeBasedTheme() : defaultTheme;
   });
 
   useEffect(() => {

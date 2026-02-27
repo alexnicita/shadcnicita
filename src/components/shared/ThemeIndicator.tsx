@@ -11,13 +11,13 @@ function ThemeIcon({ isDarkMode }: ThemeIconProps) {
       <Sun
         size={13}
         strokeWidth={1.85}
-        className={`absolute inset-0 m-auto transition-opacity duration-150 ${isDarkMode ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 m-auto transition-opacity duration-150 ${isDarkMode ? "opacity-0" : "opacity-100"}`}
         aria-hidden="true"
       />
       <Moon
         size={13}
         strokeWidth={1.85}
-        className={`absolute inset-0 m-auto transition-opacity duration-150 ${isDarkMode ? "opacity-0" : "opacity-100"}`}
+        className={`absolute inset-0 m-auto transition-opacity duration-150 ${isDarkMode ? "opacity-100" : "opacity-0"}`}
         aria-hidden="true"
       />
     </span>

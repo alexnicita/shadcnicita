@@ -2,23 +2,51 @@ import { useState, useEffect, useCallback } from "react";
 import SunCalc from "suncalc";
 import { useTheme as useUiTheme } from "@/components/theme-provider";
 
-const NYC_LOCATION = { lat: 40.7128, lng: -74.006 };
-
 type Mode = "light" | "dark";
 
+const NYC_LOCATION = { lat: 40.7128, lng: -74.006 };
+
+function isNycDaytime(now: Date): boolean {
+  try {
+    const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+    const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
+    const sunset = new Date(times.sunset.getTime() - 30 * 60000);
+    return now > sunrise && now < sunset;
+  } catch {
+    const hour = now.getHours();
+    return hour >= 6 && hour < 19;
+  }
+}
+
 function getThemeMessage(now: Date, isDark: boolean) {
-  const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
-  let nextChange;
-  if (isDark) {
-    // Night: time until sunrise
-    nextChange = times.sunrise;
-  } else {
-    // Day: time until sunset
-    nextChange = times.sunset;
+  let nextChange: Date;
+
+  try {
+    const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
+    nextChange = isDark ? times.sunrise : times.sunset;
+
+    if (nextChange.getTime() <= now.getTime()) {
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowTimes = SunCalc.getTimes(
+        tomorrow,
+        NYC_LOCATION.lat,
+        NYC_LOCATION.lng
+      );
+      nextChange = isDark ? tomorrowTimes.sunrise : tomorrowTimes.sunset;
+    }
+  } catch {
+    nextChange = new Date(now);
+    if (isDark) {
+      nextChange.setHours(6, 0, 0, 0);
+    } else {
+      nextChange.setHours(19, 0, 0, 0);
+    }
+    if (nextChange <= now) {
+      nextChange.setDate(nextChange.getDate() + 1);
+    }
   }
-  if (nextChange.getTime() - now.getTime() < 0) {
-    nextChange = new Date(nextChange.getTime() + 24 * 60 * 60 * 1000);
-  }
+
   const timeUntilChange = new Date(nextChange.getTime() - now.getTime());
   const hours = Math.floor(timeUntilChange.getTime() / (1000 * 60 * 60));
   const minutes = Math.floor(
@@ -40,15 +68,7 @@ const getSystemPreference = (): Mode => {
 
 const getInitialMode = (): Mode => {
   if (typeof window === "undefined") return "dark";
-  try {
-    const stored = localStorage.getItem("vite-ui-theme") as Mode | "system" | null;
-    if (stored === "light" || stored === "dark") {
-      return stored;
-    }
-  } catch {
-    /* ignore */
-  }
-  return getSystemPreference();
+  return isNycDaytime(new Date()) ? "light" : "dark";
 };
 
 export function useTheme() {
@@ -68,34 +88,14 @@ export function useTheme() {
 
   useEffect(() => {
     const updateTheme = () => {
-      try {
-        const now = new Date();
-        const times = SunCalc.getTimes(now, NYC_LOCATION.lat, NYC_LOCATION.lng);
-        const sunrise = new Date(times.sunrise.getTime() + 30 * 60000);
-        const sunset = new Date(times.sunset.getTime() - 30 * 60000);
-        const isDay = now > sunrise && now < sunset;
-        if (isAutoTheme) {
-          applyMode(!isDay);
-        }
-        setThemeMessage(
-          getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode)
-        );
-      } catch (error) {
-        console.warn(
-          "SunCalc failed, falling back to time-based theme:",
-          error
-        );
-        // Fallback: use simple time-based logic (8am-8pm = light mode)
-        const now = new Date();
-        const hour = now.getHours();
-        const isDay = hour >= 8 && hour < 20;
-        if (isAutoTheme) {
-          applyMode(!isDay);
-        }
-        setThemeMessage(
-          getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode)
-        );
+      const now = new Date();
+      const isDay = isNycDaytime(now);
+      if (isAutoTheme) {
+        applyMode(!isDay);
       }
+      setThemeMessage(
+        getThemeMessage(now, isAutoTheme ? !isDay : isDarkMode)
+      );
     };
     updateTheme();
     const interval = setInterval(updateTheme, 60000);
