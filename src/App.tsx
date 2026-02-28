@@ -1,6 +1,6 @@
 import "./App.css";
 import { Analytics } from "@vercel/analytics/react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import BaseLayout from "./components/shared/BaseLayout";
 import ColorPaletteLauncher from "./components/ColorPaletteLauncher";
 import CornerInfo from "./components/CornerInfo";
@@ -11,9 +11,36 @@ import { useSeo } from "./lib/seo";
 
 const DISPLAY_NAME = "alexander nicita";
 let hasAnimatedHomeOnce = false;
+const MAX_CUBES = 5;
+const CUBE_SIZE = 120;
+
+interface CubeInstance {
+  id: number;
+  x: number;
+  y: number;
+  isDeleting?: boolean;
+}
+
+const DELETE_FADE_MS = 150;
+
+const clampCubePosition = (x: number, y: number) => {
+  const maxX = Math.max(window.innerWidth - CUBE_SIZE, 0);
+  const maxY = Math.max(window.innerHeight - CUBE_SIZE, 0);
+  return {
+    x: Math.min(Math.max(x, 0), maxX),
+    y: Math.min(Math.max(y, 0), maxY),
+  };
+};
 
 function App() {
   const shouldAnimateEntrance = !hasAnimatedHomeOnce;
+  const nextCubeId = useRef(1);
+  const [cubes, setCubes] = useState<CubeInstance[]>(() => {
+    const centeredX = (window.innerWidth - CUBE_SIZE) / 2;
+    const centeredY = (window.innerHeight - CUBE_SIZE) / 2;
+    const centered = clampCubePosition(centeredX, centeredY);
+    return [{ id: 0, x: centered.x, y: centered.y }];
+  });
 
   useSeo({
     title: "Alexander Nicita",
@@ -29,6 +56,46 @@ function App() {
 
   useEffect(() => {
     hasAnimatedHomeOnce = true;
+  }, []);
+
+  const handleCreateCube = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      setCubes((prev) => {
+        if (prev.length >= MAX_CUBES) return prev;
+        const spawned = clampCubePosition(
+          event.clientX - CUBE_SIZE / 2,
+          event.clientY - CUBE_SIZE / 2
+        );
+        return [
+          ...prev,
+          {
+            id: nextCubeId.current++,
+            x: spawned.x,
+            y: spawned.y,
+          },
+        ];
+      });
+    },
+    []
+  );
+
+  const handleDeleteCube = useCallback((id: number) => {
+    let shouldScheduleRemoval = false;
+
+    setCubes((prev) => {
+      const target = prev.find((cube) => cube.id === id);
+      if (!target || target.isDeleting) return prev;
+      shouldScheduleRemoval = true;
+      return prev.map((cube) =>
+        cube.id === id ? { ...cube, isDeleting: true } : cube
+      );
+    });
+
+    if (shouldScheduleRemoval) {
+      window.setTimeout(() => {
+        setCubes((prev) => prev.filter((cube) => cube.id !== id));
+      }, DELETE_FADE_MS);
+    }
   }, []);
 
   return (
@@ -60,13 +127,20 @@ function App() {
 
         {/* Cube - fixed center */}
         <div
-          className={`fixed inset-0 flex items-center justify-center z-10 pointer-events-none ${
+          className={`fixed inset-0 z-10 pointer-events-auto ${
             shouldAnimateEntrance ? "animate-fade-in" : ""
           }`}
+          onClick={handleCreateCube}
         >
-          <div className="pointer-events-auto">
-            <SpinningCube />
-          </div>
+          {cubes.map((cube) => (
+            <SpinningCube
+              key={cube.id}
+              size={CUBE_SIZE}
+              initialPosition={{ x: cube.x, y: cube.y }}
+              onDelete={() => handleDeleteCube(cube.id)}
+              isDeleting={cube.isDeleting}
+            />
+          ))}
         </div>
 
         {/* Desktop: Color palette selector (bottom center) */}
