@@ -125,13 +125,17 @@ function App() {
           </div>
         </div>
 
-        {/* Cube - fixed center */}
+        {/* Cube - fixed center. Wrapper uses pointer-events-none so bottom-left/right UI stays hoverable/clickable; inner layer and cubes capture events. */}
         <div
-          className={`fixed inset-0 z-10 pointer-events-auto ${
+          className={`fixed inset-0 z-10 pointer-events-none ${
             shouldAnimateEntrance ? "animate-fade-in" : ""
           }`}
-          onClick={handleCreateCube}
         >
+          <div
+            className="absolute inset-0 pointer-events-auto"
+            onClick={handleCreateCube}
+            aria-hidden
+          />
           {cubes.map((cube) => (
             <SpinningCube
               key={cube.id}
