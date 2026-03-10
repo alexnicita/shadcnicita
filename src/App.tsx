@@ -117,7 +117,7 @@ function App() {
               {DISPLAY_NAME}
             </a>
           </h1>
-          <div className="md:hidden mt-1">
+          <div className="md:hidden mt-1 ml-[1pt]">
             <PrimaryLinks className="w-max" align="center" />
           </div>
           <div className="hidden md:flex absolute left-0 top-full mt-3 w-full justify-center">
