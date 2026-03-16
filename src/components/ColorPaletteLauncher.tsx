@@ -43,10 +43,9 @@ export default function ColorPaletteLauncher({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const spacing = variant === "inline" ? 32 : 44;
-  const isInline = variant === "inline";
   const offsets = useMemo(
     () => computeOffsets(paletteChoices.length, spacing),
-    [paletteChoices.length, spacing, isInline]
+    [paletteChoices.length, spacing]
   );
   const { theme: baseTheme } = useUiTheme();
   const isDarkMode =
@@ -56,6 +55,7 @@ export default function ColorPaletteLauncher({
         window.matchMedia("(prefers-color-scheme: dark)").matches
       : false);
   const mode: "light" | "dark" = isDarkMode ? "dark" : "light";
+  const activePalette = THEME_PALETTES[paletteId];
   const currentSwatchColor = getPreviewColor(paletteId, mode);
   const triggerSize = "h-5 w-5";
   const triggerOffset = "-translate-y-[10px]";
@@ -98,7 +98,12 @@ export default function ColorPaletteLauncher({
 
   return (
     <div className={cn(rootClass, className)} data-nosnippet>
-      <div ref={containerRef} className={containerClass}>
+      <div
+        ref={containerRef}
+        className={containerClass}
+        role="group"
+        aria-label="Theme color palette"
+      >
         {paletteChoices.map((id, index) => {
           const palette = THEME_PALETTES[id];
           const offsetX = offsets[index] ?? 0;
@@ -108,7 +113,12 @@ export default function ColorPaletteLauncher({
           return (
             <button
               key={id}
+              type="button"
               aria-label={`Set theme to ${palette.label}`}
+              aria-pressed={isActive}
+              aria-hidden={!isExpanded}
+              disabled={!isExpanded}
+              tabIndex={isExpanded ? 0 : -1}
               onClick={() => handleSelect(id)}
               style={{
                 backgroundColor: previewColor,
@@ -117,8 +127,9 @@ export default function ColorPaletteLauncher({
                   : "translate(-50%, -50%) scale(0.3)",
                 transitionDelay: `${index * 45}ms`,
               }}
+              title={palette.description}
               className={cn(
-                "absolute top-1/2 h-5 w-5 rounded-full border border-border/20 shadow-sm outline-none transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] hover:border-border/40 focus-visible:ring-1 focus-visible:ring-ring/50",
+                "absolute top-1/2 h-5 w-5 rounded-full border border-border/20 shadow-sm outline-none transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] hover:scale-110 hover:border-border/60 hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none",
                 "left-1/2",
                 isExpanded ? "opacity-100" : "opacity-0",
                 isActive && "ring-1 ring-foreground/20 ring-offset-1 ring-offset-background"
@@ -126,19 +137,24 @@ export default function ColorPaletteLauncher({
             />
           );
         })}
-
         <button
           type="button"
           aria-label={
             isExpanded
-              ? "Collapse mode toggle"
-              : "Mode toggle. Double click to reset."
+              ? "Collapse color palette"
+              : `Open color palette. Current palette: ${activePalette.label}. Double click to reset to ${THEME_PALETTES[DEFAULT_PALETTE_ID].label}.`
           }
+          aria-expanded={isExpanded}
           onClick={handleToggle}
           onDoubleClick={handleReset}
           style={{ backgroundColor: currentSwatchColor }}
+          title={
+            isExpanded
+              ? "Collapse color palette"
+              : `Open color palette. Double click to reset to ${THEME_PALETTES[DEFAULT_PALETTE_ID].label}.`
+          }
           className={cn(
-            "absolute top-1/2 flex items-center justify-center rounded-full border border-border/35 shadow-sm transition-all duration-200 ease-out hover:border-border/55",
+            "absolute top-1/2 flex items-center justify-center rounded-full border border-border/35 shadow-sm transition-all duration-200 ease-out hover:scale-105 hover:border-border/60 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             "left-1/2 -translate-x-1/2 -translate-y-1/2",
             triggerSize,
             triggerOffset,
@@ -150,10 +166,9 @@ export default function ColorPaletteLauncher({
                 )
           )}
         >
-          <span className="sr-only">Mode toggle</span>
+          <span className="sr-only">Color palette</span>
         </button>
       </div>
     </div>
   );
 }
-

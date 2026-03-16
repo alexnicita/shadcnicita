@@ -151,9 +151,10 @@ function App() {
         <ColorPaletteLauncher />
 
         {/* Desktop: Theme indicator (bottom right) */}
-        <div className={`hidden md:block ${shouldAnimateEntrance ? "animate-fade-in" : ""}`}>
-          <ThemeIndicator variant="desktop" />
-        </div>
+        <ThemeIndicator
+          variant="desktop"
+          className={shouldAnimateEntrance ? "animate-fade-in" : ""}
+        />
 
         {/* Mobile: Bottom section - stacked vertically, centered */}
         <div

@@ -37,10 +37,13 @@ function ThemeButton({
 }: ThemeButtonProps) {
   return (
     <button
+      type="button"
       onClick={handleThemeClick}
-      className={`p-1 rounded-full border border-muted-foreground/45 text-muted-foreground hover:text-foreground hover:border-foreground/55 focus-visible:text-foreground focus-visible:border-foreground/55 transition-colors duration-200 flex items-center justify-center leading-none ${className}`}
+      aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+      aria-pressed={isDarkMode}
+      className={`p-1 rounded-full border border-muted-foreground/45 text-muted-foreground hover:scale-[1.04] hover:text-foreground hover:border-foreground/55 focus-visible:text-foreground focus-visible:border-foreground/55 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all duration-200 flex items-center justify-center leading-none ${className}`}
       style={{ minWidth: 28, minHeight: 28 }}
-      title="Click to toggle theme (Alt + click to toggle auto mode)"
+      title={`Switch to ${isDarkMode ? "light" : "dark"} mode (Alt + click toggles automatic NYC daylight mode)`}
     >
       <ThemeIcon isDarkMode={isDarkMode} />
     </button>
@@ -51,12 +54,14 @@ interface ThemeIndicatorProps {
   variant?: "mobile" | "desktop" | "both";
   showInContent?: boolean;
   fixedDesktop?: boolean;
+  className?: string;
 }
 
 export default function ThemeIndicator({
   variant = "both",
   showInContent = false,
   fixedDesktop = true,
+  className = "",
 }: ThemeIndicatorProps) {
   const { isDarkMode, themeMessage, handleThemeClick } = useTheme();
 
@@ -67,7 +72,7 @@ export default function ThemeIndicator({
   return (
     <>
       {(variant === "mobile" || variant === "both") && (
-        <div className={mobileStyles}>
+        <div className={`${mobileStyles} ${className}`.trim()}>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">NYC</span>
             <ThemeButton
@@ -85,8 +90,8 @@ export default function ThemeIndicator({
         <div
           className={
             fixedDesktop
-              ? "hidden md:flex fixed z-40 bottom-8 right-8 items-center gap-1.5"
-              : "hidden md:flex items-center gap-1.5"
+              ? `hidden md:flex fixed z-40 bottom-8 right-8 items-center gap-1.5 ${className}`
+              : `hidden md:flex items-center gap-1.5 ${className}`
           }
         >
           <div className="min-w-[2.3rem] text-center theme-time-font">

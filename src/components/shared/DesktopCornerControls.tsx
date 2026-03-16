@@ -14,13 +14,17 @@ export default function DesktopCornerControls({
 
   return (
     <>
-      <div className={animationClass}>
-        <CornerInfo variant="desktop" fixedDesktop />
-      </div>
+      <CornerInfo
+        variant="desktop"
+        fixedDesktop
+        className={animationClass}
+      />
       {showThemeIndicator && (
-        <div className={animationClass}>
-          <ThemeIndicator variant="desktop" fixedDesktop />
-        </div>
+        <ThemeIndicator
+          variant="desktop"
+          fixedDesktop
+          className={animationClass}
+        />
       )}
     </>
   );

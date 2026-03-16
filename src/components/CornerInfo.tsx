@@ -9,20 +9,27 @@ interface CornerInfoProps {
 }
 
 function SocialLinks({ className }: { className?: string }) {
+  const socialLinkClasses =
+    "group flex h-7 w-7 items-center justify-center rounded-full text-foreground/40 transition-colors duration-200 hover:text-foreground/80 focus-visible:text-foreground/80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
   return (
-    <nav className={cn("flex items-center gap-3", className)}>
+    <nav
+      aria-label="Social links"
+      className={cn("flex items-center gap-3", className)}
+    >
       <a
         href="https://x.com/NicitaAlex"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-foreground/35 hover:text-foreground/75 transition-colors duration-200 flex items-center justify-center"
+        className={socialLinkClasses}
         aria-label="X"
+        title="Open X profile"
       >
         <svg
           role="img"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-[13px] h-[13px] fill-current"
+          className="h-[13px] w-[13px] fill-current"
         >
           <title>X</title>
           <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
@@ -32,8 +39,9 @@ function SocialLinks({ className }: { className?: string }) {
         href="https://www.linkedin.com/in/alexander-nicita/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-foreground/35 hover:text-foreground/75 transition-colors duration-200 flex items-center justify-center"
+        className={socialLinkClasses}
         aria-label="LinkedIn"
+        title="Open LinkedIn profile"
       >
         <Linkedin size={13} strokeWidth={1.7} />
       </a>
@@ -41,8 +49,9 @@ function SocialLinks({ className }: { className?: string }) {
         href="https://github.com/alexnicita"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-foreground/35 hover:text-foreground/75 transition-colors duration-200 flex items-center justify-center"
+        className={socialLinkClasses}
         aria-label="GitHub"
+        title="Open GitHub profile"
       >
         <Github size={13} />
       </a>
