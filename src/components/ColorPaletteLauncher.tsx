@@ -112,7 +112,7 @@ export default function ColorPaletteLauncher({
 
           return (
             <button
-              key={id}
+              key={`${variant}-${index}`}
               type="button"
               aria-label={`Set theme to ${palette.label}`}
               aria-pressed={isActive}
@@ -124,8 +124,7 @@ export default function ColorPaletteLauncher({
                 backgroundColor: previewColor,
                 transform: isExpanded
                   ? `translate(calc(-50% + ${offsetX}px), -50%) scale(1)`
-                  : "translate(-50%, -50%) scale(0.3)",
-                transitionDelay: `${index * 45}ms`,
+                  : `translate(calc(-50% + ${offsetX}px), -50%) scale(0.3)`,
               }}
               title={palette.description}
               className={cn(
@@ -145,6 +144,9 @@ export default function ColorPaletteLauncher({
               : `Open color palette. Current palette: ${activePalette.label}. Double click to reset to ${THEME_PALETTES[DEFAULT_PALETTE_ID].label}.`
           }
           aria-expanded={isExpanded}
+          aria-hidden={isExpanded}
+          disabled={isExpanded}
+          tabIndex={isExpanded ? -1 : 0}
           onClick={handleToggle}
           onDoubleClick={handleReset}
           style={{ backgroundColor: currentSwatchColor }}
@@ -159,9 +161,9 @@ export default function ColorPaletteLauncher({
             triggerSize,
             triggerOffset,
             isExpanded
-              ? "scale-0 opacity-0"
+              ? "pointer-events-none scale-0 opacity-0"
               : cn(
-                  "scale-100 opacity-100 ring-1 ring-foreground/15 ring-offset-1 ring-offset-background",
+                  "pointer-events-auto scale-100 opacity-100 ring-1 ring-foreground/15 ring-offset-1 ring-offset-background",
                   triggerOffset
                 )
           )}
