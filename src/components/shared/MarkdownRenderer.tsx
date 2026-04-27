@@ -1,78 +1,267 @@
-import { useMemo } from "react";
+import { Children, isValidElement, type ReactNode, useMemo } from "react";
+import { ExternalLink } from "lucide-react";
+import ReactMarkdown, { type Components } from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+import { cn } from "@/lib/utils";
 
 interface MarkdownRendererProps {
   content: string;
 }
 
+interface LinkPreviewData {
+  href: string;
+  label: string;
+  title: string;
+  description?: string;
+}
+
+interface LinkElementProps {
+  href?: unknown;
+  title?: unknown;
+  children?: ReactNode;
+}
+
+function isExternalHref(href: unknown): href is string {
+  return typeof href === "string" && /^https?:\/\//i.test(href);
+}
+
+function getDisplayHost(href: string): string {
+  try {
+    return new URL(href).hostname.replace(/^www\./, "");
+  } catch {
+    return href;
+  }
+}
+
+function getTextContent(value: ReactNode): string {
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(getTextContent).join("");
+  }
+
+  if (isValidElement<{ children?: ReactNode }>(value)) {
+    return getTextContent(value.props.children);
+  }
+
+  return "";
+}
+
+function getNodeProperty(node: unknown, propertyName: string): unknown {
+  if (!node || typeof node !== "object" || !("properties" in node)) {
+    return undefined;
+  }
+
+  const properties = (node as { properties?: Record<string, unknown> })
+    .properties;
+  return properties?.[propertyName];
+}
+
+function hasNodeProperty(node: unknown, propertyName: string): boolean {
+  return (
+    Boolean(getNodeProperty(node, propertyName)) ||
+    Boolean(getNodeProperty(node, propertyName.replace(/[A-Z]/g, "-$&").toLowerCase()))
+  );
+}
+
+function getStandaloneLinkPreview(children: ReactNode): LinkPreviewData | null {
+  const meaningfulChildren = Children.toArray(children).filter((child) => {
+    return typeof child !== "string" || child.trim().length > 0;
+  });
+
+  if (meaningfulChildren.length !== 1) return null;
+
+  const candidate = meaningfulChildren[0];
+  if (!isValidElement<LinkElementProps>(candidate)) return null;
+
+  const { href, title, children: linkChildren } = candidate.props;
+  if (!isExternalHref(href)) return null;
+
+  const linkText = getTextContent(linkChildren).trim();
+  const description = typeof title === "string" ? title.trim() : "";
+
+  return {
+    href,
+    label: getDisplayHost(href),
+    title: linkText || href,
+    description: description || undefined,
+  };
+}
+
+function LinkPreview({
+  href,
+  label,
+  title,
+  description,
+}: LinkPreviewData) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="not-prose group my-6 block rounded-md border border-border bg-card/40 p-4 text-left no-underline transition-colors hover:border-muted-foreground/60 hover:bg-accent/40 hover:no-underline"
+    >
+      <span className="mb-2 flex min-w-0 items-center gap-2 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">
+        <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+        <span className="truncate">{label}</span>
+      </span>
+      <span className="block text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-muted-foreground">
+        {title}
+      </span>
+      {description && (
+        <span className="mt-2 block text-sm leading-6 text-muted-foreground">
+          {description}
+        </span>
+      )}
+    </a>
+  );
+}
+
+const markdownComponents: Components = {
+  h1({ node, className, ...props }) {
+    void node;
+    return (
+      <h1
+        className={cn("mb-5 mt-8 text-3xl font-bold md:text-4xl", className)}
+        {...props}
+      />
+    );
+  },
+  h2({ node, className, id, ...props }) {
+    void node;
+    return (
+      <h2
+        id={id}
+        className={cn(
+          id === "footnote-label"
+            ? "sr-only"
+            : "mb-4 mt-8 text-2xl font-bold",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+  h3({ node, className, ...props }) {
+    void node;
+    return (
+      <h3
+        className={cn("mb-3 mt-6 text-xl font-semibold", className)}
+        {...props}
+      />
+    );
+  },
+  p({ node, children, className, ...props }) {
+    void node;
+    const preview = getStandaloneLinkPreview(children);
+
+    if (preview) {
+      return <LinkPreview {...preview} />;
+    }
+
+    return (
+      <p className={cn("mb-4 leading-7", className)} {...props}>
+        {children}
+      </p>
+    );
+  },
+  a({ node, className, href, title, ...props }) {
+    const isFootnoteRef = hasNodeProperty(node, "dataFootnoteRef");
+    const isFootnoteBackref = hasNodeProperty(node, "dataFootnoteBackref");
+    const isExternal = isExternalHref(href);
+
+    return (
+      <a
+        className={cn(
+          "transition-colors hover:text-foreground",
+          isFootnoteRef || isFootnoteBackref
+            ? "font-semibold no-underline"
+            : "font-medium underline underline-offset-4",
+          className,
+        )}
+        href={href}
+        title={title}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        {...props}
+      />
+    );
+  },
+  blockquote({ node, className, ...props }) {
+    void node;
+    return (
+      <blockquote
+        className={cn(
+          "not-prose my-6 border-l-4 border-muted-foreground pl-4 italic text-muted-foreground [&>p:last-child]:mb-0",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+  ul({ node, className, ...props }) {
+    void node;
+    return <ul className={cn("mb-4 ml-6 list-disc", className)} {...props} />;
+  },
+  ol({ node, className, ...props }) {
+    void node;
+    return (
+      <ol className={cn("mb-4 ml-6 list-decimal", className)} {...props} />
+    );
+  },
+  li({ node, className, ...props }) {
+    void node;
+    return <li className={cn("mb-1", className)} {...props} />;
+  },
+  img({ node, className, src, alt, ...props }) {
+    void node;
+    const imageSrc = src?.startsWith("./") ? `/${src.slice(2)}` : src;
+
+    return (
+      <img
+        src={imageSrc}
+        alt={alt ?? ""}
+        className={cn("mx-auto my-8 h-auto max-w-full rounded-lg", className)}
+        style={{ maxWidth: "400px", margin: "2rem auto", display: "block" }}
+        {...props}
+      />
+    );
+  },
+  section({ node, className, ...props }) {
+    const isFootnotes = hasNodeProperty(node, "dataFootnotes");
+
+    return (
+      <section
+        className={cn(
+          isFootnotes &&
+            "mt-10 border-t border-border pt-5 text-sm text-muted-foreground",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+};
+
 export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const processedContent = useMemo(() => {
-    // Lightweight markdown parsing optimized for your specific content
-    let processed = content
-      // Normalize double hyphens/en-dashes to a single em dash without spaces
+    return content
       .replace(/\s?--\s?/g, "—")
-      .replace(/\s?–\s?–\s?/g, "—")
-      // Headers
-      .replace(
-        /^## (.+)$/gm,
-        '<h2 class="text-2xl font-bold mb-4 mt-8">$1</h2>'
-      )
-      .replace(
-        /^### (.+)$/gm,
-        '<h3 class="text-xl font-semibold mb-3 mt-6">$1</h3>'
-      )
-
-      // Bold text
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-
-      // Images with optimized handling
-      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
-        let imageSrc = src;
-        if (src.startsWith("./")) {
-          imageSrc = `/${src.slice(2)}`;
-        }
-        return `<img src="${imageSrc}" alt="${alt}" class="max-w-full h-auto rounded-lg mx-auto my-8" style="max-width: 400px; margin: 2rem auto; display: block;" />`;
-      })
-
-      // Blockquotes
-      .replace(
-        /^> "(.+)" - (.+)$/gm,
-        '<blockquote class="border-l-4 border-muted-foreground pl-4 italic my-6 text-muted-foreground">"$1" - $2</blockquote>'
-      )
-
-      // List items
-      .replace(/^- (.+)$/gm, '<li class="mb-1">$1</li>')
-
-      // Wrap consecutive list items in ul
-      .replace(
-        /((?:<li class="mb-1">.*<\/li>\s*)+)/g,
-        '<ul class="list-disc ml-6 mb-4">$1</ul>'
-      )
-
-      // Paragraphs - split by double newlines
-      .split("\n\n")
-      .map((paragraph) => {
-        if (
-          paragraph.includes("<h2") ||
-          paragraph.includes("<h3") ||
-          paragraph.includes("<blockquote") ||
-          paragraph.includes("<ul") ||
-          paragraph.includes("<img")
-        ) {
-          return paragraph;
-        }
-        return paragraph.trim()
-          ? `<p class="mb-4">${paragraph.trim()}</p>`
-          : "";
-      })
-      .join("");
-
-    return processed;
+      .replace(/\s?–\s?–\s?/g, "—");
   }, [content]);
 
   return (
-    <div
-      className="prose prose-lg max-w-none dark:prose-invert"
-      dangerouslySetInnerHTML={{ __html: processedContent }}
-    />
+    <div className="prose prose-lg max-w-none dark:prose-invert">
+      <ReactMarkdown
+        components={markdownComponents}
+        rehypePlugins={[rehypeRaw]}
+        remarkPlugins={[remarkGfm]}
+      >
+        {processedContent}
+      </ReactMarkdown>
+    </div>
   );
 }

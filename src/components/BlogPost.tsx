@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import BaseLayout from "./shared/BaseLayout";
 import MarkdownRenderer from "./shared/MarkdownRenderer";
 import BlogPostNavigation from "./BlogPostNavigation";
-import { blogPosts } from "../data/blogPosts";
+import { getBlogPostBySlug } from "../data/blogPosts";
 import { useSeo } from "../lib/seo";
 
 interface PostData {
@@ -107,7 +107,7 @@ export default function BlogPost() {
     const loadPost = async () => {
       try {
         // Find the blog post data from our array
-        const blogPostData = blogPosts.find((p) => p.slug === slug);
+        const blogPostData = getBlogPostBySlug(slug);
         if (!blogPostData) {
           setError("Post not found");
           return;

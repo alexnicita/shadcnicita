@@ -45,12 +45,30 @@ export const draftPosts: DraftPost[] = [
     description: "Defining the opposite of a market to reveal what makes markets good.",
     status: "draft",
   },
+  {
+    slug: "markdown-feature-preview",
+    title: "Markdown Feature Preview",
+    description: "A local-only draft for footnotes, quotes, and link previews.",
+    status: "draft",
+  },
 ];
 
 // SECURITY: Only expose published posts to the app (both dev and prod)
 export const blogPosts: BlogPost[] = [...publishedPosts];
 
+// Drafts stay off the index, but can be opened directly while running locally.
+export function getBlogPostBySlug(slug: string): BlogPost | undefined {
+  const publishedPost = publishedPosts.find((p) => p.slug === slug);
+  if (publishedPost) return publishedPost;
+
+  if (import.meta.env.DEV && import.meta.env.MODE !== "production") {
+    return draftPosts.find((p) => p.slug === slug);
+  }
+
+  return undefined;
+}
+
 // Runtime validation function for additional security
 export function isPostAccessible(slug: string): boolean {
-  return publishedPosts.some((p) => p.slug === slug);
+  return Boolean(getBlogPostBySlug(slug));
 }
