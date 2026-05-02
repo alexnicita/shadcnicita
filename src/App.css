@@ -24,6 +24,72 @@ a {
   text-decoration: none;
 }
 
+.prose .blog-footnote-ref {
+  margin-left: 0.22em;
+  color: hsl(var(--muted-foreground) / 0.8);
+  font-size: 0.58em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+.prose .blog-footnote-ref a,
+.prose a.blog-footnote-ref-link {
+  color: inherit !important;
+  font-weight: 500;
+  text-decoration: none !important;
+}
+
+.prose .blog-footnotes {
+  margin-top: 2.5rem;
+  border-top: 1px solid hsl(var(--border) / 0.4);
+  padding-top: 1rem;
+  padding-left: 1rem;
+  color: hsl(var(--muted-foreground) / 0.7);
+  font-size: 0.78rem;
+  line-height: 1.35rem;
+}
+
+.prose .blog-footnotes ol {
+  margin: 0 0 0 1rem;
+  padding-left: 0.5rem;
+}
+
+.prose .blog-footnotes li {
+  margin-bottom: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.prose .blog-footnotes p {
+  margin: 0;
+  line-height: 1.35rem;
+}
+
+.prose .blog-footnotes a:not(.blog-footnote-backref) {
+  color: hsl(var(--muted-foreground) / 0.82) !important;
+  font-weight: 400 !important;
+  text-decoration-line: underline !important;
+  text-decoration-color: hsl(var(--muted-foreground) / 0.35) !important;
+  text-underline-offset: 2px;
+}
+
+.prose .blog-footnotes a:not(.blog-footnote-backref):hover {
+  color: hsl(var(--foreground)) !important;
+  text-decoration-color: hsl(var(--foreground) / 0.65) !important;
+}
+
+.prose .blog-footnotes .blog-footnote-backref {
+  margin-left: 0.35rem;
+  font-size: 0.75em;
+  opacity: 0.55;
+  text-decoration: none !important;
+}
+
+@media (min-width: 640px) {
+  .prose .blog-footnotes {
+    padding-left: 1.25rem;
+  }
+}
+
 /* Theme Variables */
 @layer base {
   :root {
@@ -375,4 +441,3 @@ a {
   background: hsl(var(--primary) / 0.08);
   transition-delay: 0s;
 }
-

@@ -169,16 +169,23 @@ const markdownComponents: Components = {
     );
   },
   a({ node, className, href, title, ...props }) {
-    const isFootnoteRef = hasNodeProperty(node, "dataFootnoteRef");
-    const isFootnoteBackref = hasNodeProperty(node, "dataFootnoteBackref");
+    const isFootnoteRef =
+      hasNodeProperty(node, "dataFootnoteRef") || "data-footnote-ref" in props;
+    const isFootnoteBackref =
+      hasNodeProperty(node, "dataFootnoteBackref") ||
+      "data-footnote-backref" in props ||
+      (typeof className === "string" &&
+        className.split(" ").includes("data-footnote-backref"));
     const isExternal = isExternalHref(href);
 
     return (
       <a
         className={cn(
           "transition-colors hover:text-foreground",
-          isFootnoteRef || isFootnoteBackref
-            ? "font-semibold no-underline"
+          isFootnoteRef
+            ? "blog-footnote-ref-link no-underline"
+            : isFootnoteBackref
+            ? "blog-footnote-backref no-underline"
             : "font-medium underline underline-offset-4",
           className,
         )}
@@ -186,6 +193,18 @@ const markdownComponents: Components = {
         title={title}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noopener noreferrer" : undefined}
+        {...props}
+      />
+    );
+  },
+  sup({ node, className, ...props }) {
+    void node;
+    return (
+      <sup
+        className={cn(
+          "blog-footnote-ref",
+          className,
+        )}
         {...props}
       />
     );
@@ -231,13 +250,17 @@ const markdownComponents: Components = {
     );
   },
   section({ node, className, ...props }) {
-    const isFootnotes = hasNodeProperty(node, "dataFootnotes");
+    const isFootnotes =
+      hasNodeProperty(node, "dataFootnotes") ||
+      "data-footnotes" in props ||
+      (typeof className === "string" &&
+        className.split(" ").includes("footnotes"));
 
     return (
       <section
         className={cn(
           isFootnotes &&
-            "mt-10 border-t border-border pt-5 text-sm text-muted-foreground",
+            "blog-footnotes",
           className,
         )}
         {...props}
