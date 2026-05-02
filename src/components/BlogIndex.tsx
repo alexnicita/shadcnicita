@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import BaseLayout from "./shared/BaseLayout";
 import { blogPosts } from "../data/blogPosts";
 import { useTheme as useUiTheme } from "@/components/theme-provider";
@@ -40,12 +40,16 @@ export default function BlogIndex() {
     }
   }, [navigationState?.isDarkMode, setTheme]);
 
-  const sortedPosts = [...blogPosts].sort((a, b) => {
-    if (a.status === "draft" && b.status === "draft") return 0;
-    if (a.status === "draft") return 1;
-    if (b.status === "draft") return -1;
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+  const sortedPosts = useMemo(
+    () =>
+      [...blogPosts].sort((a, b) => {
+        if (a.status === "draft" && b.status === "draft") return 0;
+        if (a.status === "draft") return 1;
+        if (b.status === "draft") return -1;
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }),
+    [],
+  );
 
   // Extract the content area after frontmatter and return the first sentence
   function extractFirstSentence(markdownRaw: string): string {
@@ -99,20 +103,11 @@ export default function BlogIndex() {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [sortedPosts]);
 
   return (
     <BaseLayout className="site-contained-scroll p-8 md:p-16">
-      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50">
-        <Link
-          to="/"
-          className="text-2xl font-bold hover:text-muted-foreground transition-colors"
-        >
-          ←
-        </Link>
-      </header>
-
-      <div className="max-w-2xl mx-auto pt-12 md:pt-16">
+      <div className="max-w-2xl mx-auto">
         <div className="space-y-8">
           {sortedPosts.map((post) => (
             <article key={post.slug} className="border-b border-border pb-8">

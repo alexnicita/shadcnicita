@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BaseLayout from "./shared/BaseLayout";
 import MarkdownRenderer from "./shared/MarkdownRenderer";
 import BlogPostNavigation from "./BlogPostNavigation";
@@ -166,15 +166,6 @@ export default function BlogPost() {
         stickyMobileFooter
         showUIElements={false}
       >
-        <header className="flex justify-between items-center mb-16">
-          <Link
-            to="/blog"
-            className="text-2xl font-bold hover:text-muted-foreground transition-colors"
-          >
-            ←
-          </Link>
-        </header>
-
         <div className="max-w-2xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Post Not Found</h1>
           <p className="text-muted-foreground mb-8">
@@ -191,16 +182,7 @@ export default function BlogPost() {
       stickyMobileFooter
       showUIElements={false}
     >
-      <header className="fixed top-4 left-4 md:top-8 md:left-8 z-50">
-        <Link
-          to="/blog"
-          className="text-2xl font-bold hover:text-muted-foreground transition-colors"
-        >
-          ←
-        </Link>
-      </header>
-
-      <div className="max-w-2xl mx-auto pt-12 md:pt-16">
+      <div className="max-w-2xl mx-auto">
         <article>
           <header className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
