@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import PrimaryLinks from "./shared/PrimaryLinks";
 
 interface CornerInfoProps {
@@ -54,6 +54,14 @@ function SocialLinks({ className }: { className?: string }) {
         title="Open GitHub profile"
       >
         <Github size={13} />
+      </a>
+      <a
+        href="mailto:alex@nicita.cc"
+        className={socialLinkClasses}
+        aria-label="Email"
+        title="Send email"
+      >
+        <Mail size={13} strokeWidth={1.7} />
       </a>
     </nav>
   );

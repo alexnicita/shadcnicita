@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "has": [{ "type": "host", "value": "nicita.cc" }],
+      "source": "/:path*",
+      "destination": "https://www.nicita.cc/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/blog/:slug",
