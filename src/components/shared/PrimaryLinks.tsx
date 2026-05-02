@@ -42,7 +42,7 @@ export default function PrimaryLinks({
       </a>
       <span className="text-foreground/30">·</span>
       <a
-        href="mailto:alex@nicita.cc"
+        href="https://keyboardvc.com"
         target="_blank"
         rel="noopener noreferrer"
         className={linkClasses}
