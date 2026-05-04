@@ -22,6 +22,13 @@ export type BlogPost = PublishedPost | DraftPost;
 // Published posts that will be visible in production
 export const publishedPosts: PublishedPost[] = [
   {
+    slug: "n-dimensional-machines",
+    title: "N-Dimensional Machines",
+    description: "Does contemporary technology lack dimension?",
+    status: "published",
+    date: "2026-05-04",
+  },
+  {
     slug: "antonym-of-the-market",
     title: "Antonym of the Market",
     description: "Nobody has a one word answer.",
@@ -39,12 +46,6 @@ export const publishedPosts: PublishedPost[] = [
 
 // Draft posts for development (not visible in production)
 export const draftPosts: DraftPost[] = [
-  {
-    slug: "n-dimensional-machines",
-    title: "N-Dimensional Machines",
-    description: "Does contemporary technology lack dimension?",
-    status: "draft",
-  },
   {
     slug: "market-antonym",
     title: "Antonym of Market",
