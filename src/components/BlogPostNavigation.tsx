@@ -22,17 +22,29 @@ export default function BlogPostNavigation({
   );
   if (currentIndex === -1) return null;
 
+  const previousIndex =
+    (currentIndex - 1 + orderedPublishedPosts.length) %
+    orderedPublishedPosts.length;
   const nextIndex = (currentIndex + 1) % orderedPublishedPosts.length;
+  const previousPost = orderedPublishedPosts[previousIndex];
   const nextPost = orderedPublishedPosts[nextIndex];
 
   return (
     <nav className="mt-14 border-t border-border pt-8" aria-label="Blog post">
-      <Link
-        to={`/blog/${nextPost.slug}`}
-        className="group flex w-full justify-end text-right text-sm font-medium uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:text-foreground md:text-base"
-      >
-        <span>NEXT →</span>
-      </Link>
+      <div className="flex items-center justify-between gap-4">
+        <Link
+          to={`/blog/${previousPost.slug}`}
+          className="group flex text-left text-sm font-medium uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:text-foreground md:text-base"
+        >
+          <span>← PREV</span>
+        </Link>
+        <Link
+          to={`/blog/${nextPost.slug}`}
+          className="group flex text-right text-sm font-medium uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:text-foreground md:text-base"
+        >
+          <span>NEXT →</span>
+        </Link>
+      </div>
     </nav>
   );
 }

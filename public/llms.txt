@@ -9,5 +9,6 @@
 - Structured discovery: https://nicita.cc/discovery.json
 
 ## Posts
+- N-Dimensional Machines (2026-05-04): https://nicita.cc/blog/n-dimensional-machines
 - Knowledge Work After Superintelligent AI (2026-02-09): https://nicita.cc/blog/knowledge-work-after-superintelligent-ai
 - Antonym of the Market (2025-08-21): https://nicita.cc/blog/antonym-of-the-market
